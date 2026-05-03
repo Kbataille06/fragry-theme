@@ -4,6 +4,13 @@
   tout conflit de parsing Liquid avec les arrow functions
 {% endcomment %}
 
+<style>
+  #shopify-section-{{ section.id }} {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+</style>
 <div id="km-header-root-{{ section.id }}">
 
   <header class="km-header" id="km-main-header" role="banner">
@@ -73,8 +80,6 @@
       </button>
     </div>
   </header>
-
-  <div style="height: 72px;" aria-hidden="true"></div>
 
   {%- comment -%} Overlay {%- endcomment -%}
   <div
