@@ -28,10 +28,16 @@
       {{ content_for_layout }}
     </main>
 
+    {%- comment -%} Mini Cart Drawer — global, partagé entre toutes les sections {%- endcomment -%}
+    {% render 'mini-cart' %}
+
     {% sections 'footer-group' %}
 
     {%- comment -%} Global vanilla JS {%- endcomment -%}
     <script src="{{ 'fragry.js' | asset_url }}" defer></script>
+
+    {%- comment -%} Mini-cart global JS {%- endcomment -%}
+    <script src="{{ 'mini-cart.js' | asset_url }}" defer></script>
 
   </body>
 </html>

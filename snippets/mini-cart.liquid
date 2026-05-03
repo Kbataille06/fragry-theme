@@ -1,0 +1,189 @@
+{% comment %}
+  FRAGRY — Mini Cart Drawer
+  - Desktop : drawer latéral droit (slide-in)
+  - Mobile  : barre sticky en bas, expansible via tap
+  Vanilla JS uniquement, aucune dépendance Alpine.
+{% endcomment %}
+
+{%- comment -%} Overlay (desktop uniquement) {%- endcomment -%}
+<div
+  id="km-cart-overlay"
+  class="km-cart-overlay"
+  aria-hidden="true"
+></div>
+
+{%- comment -%} ── Drawer principal ── {%- endcomment -%}
+<aside
+  id="km-mini-cart"
+  class="km-mini-cart"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Votre panier"
+  aria-hidden="true"
+>
+
+  {%- comment -%} Header du drawer {%- endcomment -%}
+  <div class="km-mini-cart__header">
+    <div class="km-mini-cart__title-row">
+      <h2 class="km-mini-cart__title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        Panier
+        <span class="km-mini-cart__count" id="km-cart-count-badge" aria-live="polite">
+          {{- cart.item_count -}}
+        </span>
+      </h2>
+      <button
+        type="button"
+        class="km-mini-cart__close"
+        id="km-mini-cart-close"
+        aria-label="Fermer le panier"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    <div class="km-mini-cart__header-divider"></div>
+  </div>
+
+  {%- comment -%} Corps — liste des articles {%- endcomment -%}
+  <div class="km-mini-cart__body" id="km-cart-body">
+    {%- if cart.item_count == 0 -%}
+      <div class="km-mini-cart__empty">
+        <div class="km-mini-cart__empty-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+        </div>
+        <p class="km-mini-cart__empty-msg">Votre panier est vide</p>
+        <a href="/collections/all" class="km-btn km-btn--ghost km-mini-cart__shop-link">
+          Découvrir nos fragrances
+        </a>
+      </div>
+    {%- else -%}
+      <ul class="km-mini-cart__items" id="km-cart-items-list" aria-label="Articles dans le panier">
+        {%- for item in cart.items -%}
+          <li
+            class="km-mini-cart__item"
+            data-line="{{ forloop.index }}"
+            data-variant-id="{{ item.variant_id }}"
+          >
+            {%- comment -%} Image {%- endcomment -%}
+            <div class="km-mini-cart__item-img">
+              {%- if item.image -%}
+                <img
+                  src="{{ item.image | image_url: width: 120 }}"
+                  alt="{{ item.image.alt | default: item.title | escape }}"
+                  width="60"
+                  height="80"
+                  loading="lazy"
+                >
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'km-mini-cart__item-placeholder' }}
+              {%- endif -%}
+            </div>
+
+            {%- comment -%} Infos {%- endcomment -%}
+            <div class="km-mini-cart__item-info">
+              {%- if item.product.vendor != blank -%}
+                <span class="km-mini-cart__item-vendor">{{ item.product.vendor }}</span>
+              {%- endif -%}
+              <a href="{{ item.url }}" class="km-mini-cart__item-title">{{ item.title }}</a>
+              {%- unless item.variant.title == 'Default Title' -%}
+                <span class="km-mini-cart__item-variant">{{ item.variant.title }}</span>
+              {%- endunless -%}
+
+              <div class="km-mini-cart__item-row">
+                {%- comment -%} Quantité +/- {%- endcomment -%}
+                <div class="km-mini-cart__qty" role="group" aria-label="Quantité pour {{ item.title | escape }}">
+                  <button
+                    type="button"
+                    class="km-mini-cart__qty-btn"
+                    data-qty-minus
+                    aria-label="Diminuer la quantité"
+                  >−</button>
+                  <span class="km-mini-cart__qty-val" aria-live="polite">{{ item.quantity }}</span>
+                  <button
+                    type="button"
+                    class="km-mini-cart__qty-btn"
+                    data-qty-plus
+                    aria-label="Augmenter la quantité"
+                  >+</button>
+                </div>
+                <span class="km-mini-cart__item-price">{{ item.final_line_price | money }}</span>
+              </div>
+            </div>
+
+            {%- comment -%} Supprimer {%- endcomment -%}
+            <button
+              type="button"
+              class="km-mini-cart__item-remove"
+              data-remove-line="{{ forloop.index }}"
+              aria-label="Supprimer {{ item.title | escape }}"
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <path d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Footer — total + CTA {%- endcomment -%}
+  <div class="km-mini-cart__footer" id="km-cart-footer" {% if cart.item_count == 0 %}style="display:none"{% endif %}>
+    <div class="km-mini-cart__subtotal-row">
+      <span class="km-mini-cart__subtotal-label">Sous-total</span>
+      <span class="km-mini-cart__subtotal-value" id="km-cart-total">
+        {{- cart.total_price | money -}}
+      </span>
+    </div>
+    <p class="km-mini-cart__shipping-note">Livraison calculée à la commande</p>
+    <a href="{{ routes.cart_url }}" class="km-btn km-mini-cart__checkout-btn">
+      Voir le panier
+    </a>
+    <a href="/checkout" class="km-btn km-btn--ghost km-mini-cart__checkout-btn km-mini-cart__checkout-btn--direct">
+      Commander
+    </a>
+  </div>
+
+</aside>
+
+{%- comment -%} ── Mobile sticky bar (visible uniquement en mobile) ── {%- endcomment -%}
+<div
+  id="km-cart-bar"
+  class="km-cart-bar"
+  role="complementary"
+  aria-label="Résumé du panier"
+  style="display:none;"
+>
+  <button
+    type="button"
+    class="km-cart-bar__inner"
+    id="km-cart-bar-toggle"
+    aria-label="Ouvrir le panier"
+    aria-expanded="false"
+    aria-controls="km-mini-cart"
+  >
+    <span class="km-cart-bar__icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+      <span class="km-cart-bar__count" id="km-cart-bar-count" aria-hidden="true">{{ cart.item_count }}</span>
+    </span>
+    <span class="km-cart-bar__label">Mon panier</span>
+    <span class="km-cart-bar__total" id="km-cart-bar-total">{{ cart.total_price | money }}</span>
+    <svg class="km-cart-bar__chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+</div>

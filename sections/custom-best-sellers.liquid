@@ -138,39 +138,16 @@
     btn.addEventListener('click', function() {
       var card = btn.closest('[data-variant-id]');
       if (!card || btn.disabled) return;
-
       var variantId = Number(card.dataset.variantId);
-      btn.disabled = true;
-      btn.classList.add('km-product-card__add-btn--loading');
-
-      fetch(window.Shopify.routes.root + 'cart/add.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: variantId, quantity: 1 })
-      })
-      .then(function(res) {
-        if (res.ok) {
-          btn.classList.remove('km-product-card__add-btn--loading');
-          btn.classList.add('km-product-card__add-btn--added');
-          btn.setAttribute('aria-label', 'Ajouté au panier !');
-          setTimeout(function() {
-            btn.classList.remove('km-product-card__add-btn--added');
-            btn.disabled = false;
-            btn.setAttribute('aria-label', 'Ajouter au panier');
-          }, 2000);
-        } else {
-          btn.disabled = false;
-          btn.classList.remove('km-product-card__add-btn--loading');
-        }
-      })
-      .catch(function() {
-        btn.disabled = false;
-        btn.classList.remove('km-product-card__add-btn--loading');
-      });
+      // Déléguer à la fonction globale du mini-cart
+      if (typeof window.fragryAddToCart === 'function') {
+        window.fragryAddToCart(variantId, btn);
+      }
     });
   });
 })();
 </script>
+
 
 {% schema %}
 {
