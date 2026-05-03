@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "footer",
   "name": "Pied de page",
@@ -5,28 +14,32 @@
     "km-footer": {
       "type": "custom-footer",
       "blocks": {
-        "col-1": {
+        "link_column_6yGQL4": {
           "type": "link_column",
           "settings": {
-            "title": "Navigation"
+            "title": "Liens rapides",
+            "menu": "liens-rapides-footer"
           }
         },
-        "col-2": {
+        "link_column_9LjJqn": {
           "type": "link_column",
           "settings": {
-            "title": "Services"
-          }
-        },
-        "col-3": {
-          "type": "link_column",
-          "settings": {
-            "title": "Contact"
+            "title": "Infos",
+            "menu": "footer"
           }
         }
       },
-      "blocks_order": ["col-1", "col-2", "col-3"],
+      "block_order": [
+        "link_column_6yGQL4",
+        "link_column_9LjJqn"
+      ],
       "settings": {
-        "tagline": "Fragrances d'exception pour esprits affinés."
+        "store_name": "",
+        "tagline": "Fragrances d'exception pour esprits affinés.",
+        "instagram_url": "https://www.instagram.com/km_parfumerie21/",
+        "facebook_url": "",
+        "tiktok_url": "",
+        "policy_links": "l-gal-footer"
       }
     }
   },
