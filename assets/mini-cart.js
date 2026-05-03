@@ -302,10 +302,11 @@
     if (btn) {
       btn.disabled = true;
       btn.classList.add('km-product-card__add-btn--loading');
-      // Afficher spinner
-      var icon = btn.querySelector('[data-state="idle"]');
-      if (icon) {
-        icon.innerHTML = '<span class="km-spinner" aria-hidden="true"></span>';
+      // Afficher spinner dans le label (desktop) ou icône (mobile)
+      var labelEl = btn.querySelector('.km-product-card__add-btn-label, [data-state="idle"]');
+      if (labelEl) {
+        labelEl.setAttribute('data-state', 'loading');
+        labelEl.innerHTML = '<span class="km-spinner" aria-hidden="true"></span>';
       }
     }
 
@@ -325,12 +326,11 @@
       if (btn) {
         btn.classList.remove('km-product-card__add-btn--loading');
         btn.classList.add('km-product-card__add-btn--added');
-        // Icône check
-        var icon2 = btn.querySelector('[data-state="idle"]');
-        if (icon2) {
-          icon2.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+        var labelEl2 = btn.querySelector('.km-product-card__add-btn-label, [data-state]');
+        if (labelEl2) {
+          labelEl2.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Ajouté !';
         }
-        btn.setAttribute('aria-label', 'Ajout\u00e9 au panier !');
+        btn.setAttribute('aria-label', 'Ajouté au panier !');
 
         // Ouvrir le mini-cart
         openCart();
@@ -339,9 +339,9 @@
           btn.classList.remove('km-product-card__add-btn--added');
           btn.disabled = false;
           btn.setAttribute('aria-label', 'Ajouter au panier');
-          // Remettre icône panier
-          if (icon2) {
-            icon2.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>';
+          if (labelEl2) {
+            labelEl2.setAttribute('data-state', 'idle');
+            labelEl2.innerHTML = 'Ajouter au panier';
           }
         }, 2200);
       }
@@ -350,13 +350,15 @@
       if (btn) {
         btn.disabled = false;
         btn.classList.remove('km-product-card__add-btn--loading');
-        var icon3 = btn.querySelector('[data-state="idle"]');
-        if (icon3) {
-          icon3.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>';
+        var labelEl3 = btn.querySelector('.km-product-card__add-btn-label, [data-state]');
+        if (labelEl3) {
+          labelEl3.setAttribute('data-state', 'idle');
+          labelEl3.innerHTML = 'Ajouter au panier';
         }
       }
     });
   };
+
 
   /* ──────────────────────────────────────────
      HEADER — compteur du panier
