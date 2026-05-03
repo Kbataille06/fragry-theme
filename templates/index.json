@@ -28,7 +28,7 @@
       "settings": {
         "eyebrow": "Nos Favoris",
         "title": "Best Sellers",
-        "collection": "",
+        "collection": "best-sellers",
         "products_count": 4,
         "cta_label": "Voir tous les produits",
         "cta_url": ""
