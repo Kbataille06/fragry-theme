@@ -1,0 +1,143 @@
+<footer class="km-footer" role="contentinfo" id="km-footer-{{ section.id }}">
+  <div class="km-footer__inner">
+
+    {%- comment -%} Brand column {%- endcomment -%}
+    <div class="km-footer__brand">
+      <span class="km-footer__logo">{{ section.settings.store_name | default: shop.name }}</span>
+      {%- if section.settings.tagline != blank -%}
+        <p class="km-footer__tagline">{{ section.settings.tagline }}</p>
+      {%- endif -%}
+
+      <div class="km-footer__socials">
+        {%- if section.settings.instagram_url != blank -%}
+          <a href="{{ section.settings.instagram_url }}" class="km-footer__social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.facebook_url != blank -%}
+          <a href="{{ section.settings.facebook_url }}" class="km-footer__social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+            </svg>
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.tiktok_url != blank -%}
+          <a href="{{ section.settings.tiktok_url }}" class="km-footer__social-link" aria-label="TikTok" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+            </svg>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} Link columns via blocks {%- endcomment -%}
+    {%- for block in section.blocks -%}
+      <div class="km-footer__col" {{ block.shopify_attributes }}>
+        {%- if block.settings.title != blank -%}
+          <h3 class="km-footer__col-title">{{ block.settings.title }}</h3>
+        {%- endif -%}
+        {%- if block.settings.menu != blank -%}
+          <ul class="km-footer__links">
+            {%- for link in linklists[block.settings.menu].links -%}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+
+  </div>
+
+  <div class="km-footer__bottom">
+    <p class="km-footer__copyright">
+      &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. Tous droits réservés.
+    </p>
+    {%- if section.settings.policy_links -%}
+      <ul style="display:flex;gap:var(--spacing-md);list-style:none;">
+        {%- for link in linklists[section.settings.policy_links].links -%}
+          <li>
+            <a href="{{ link.url }}" style="font-size:0.72rem;color:rgba(245,240,234,0.35);letter-spacing:0.05em;transition:color var(--transition-base);">
+              {{ link.title }}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Pied de page Fragry",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "text",
+      "id": "store_name",
+      "label": "Nom de la boutique (logo texte)"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Accroche",
+      "default": "Fragrances d'exception pour esprits affinés."
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "URL Instagram"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "URL Facebook"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "URL TikTok"
+    },
+    {
+      "type": "link_list",
+      "id": "policy_links",
+      "label": "Menu CGV / Mentions légales"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_column",
+      "name": "Colonne de liens",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre de la colonne",
+          "default": "Navigation"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu à afficher"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pied de page Fragry",
+      "blocks": [
+        { "type": "link_column" },
+        { "type": "link_column" },
+        { "type": "link_column" }
+      ]
+    }
+  ]
+}
+{% endschema %}

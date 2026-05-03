@@ -1,0 +1,145 @@
+{% comment %}
+  FRAGRY — Scrolling Marquee
+{% endcomment %}
+
+<style>
+.km-marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  background-color: {{ section.settings.bg_color | default: "var(--c-bg-dark)" }};
+  color: {{ section.settings.text_color | default: "var(--c-text-light)" }};
+  padding: {{ section.settings.padding_y }}px 0;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid var(--c-border);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.km-marquee-track {
+  display: inline-flex;
+  animation: marquee-scroll {{ section.settings.speed }}s linear infinite;
+  {% if section.settings.direction == 'right' %}
+    animation-direction: reverse;
+  {% endif %}
+}
+
+.km-marquee-item {
+  font-family: var(--font-heading);
+  font-size: {{ section.settings.font_size }}px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.km-marquee-separator {
+  margin: 0 2rem;
+  color: var(--c-accent-gold);
+}
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+</style>
+
+<div class="km-marquee-container">
+  {%- capture marquee_content -%}
+    {%- for i in (1..5) -%}
+      <div class="km-marquee-item">
+        {{ section.settings.text }}
+        {%- if section.settings.show_separator -%}
+          <span class="km-marquee-separator">✦</span>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  {%- endcapture -%}
+  
+  <div class="km-marquee-track">
+    {{ marquee_content }}
+    {{ marquee_content }}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Texte Défilant (Marquee)",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Texte à faire défiler",
+      "default": "LIVRAISON OFFERTE DÈS 100€ D'ACHAT"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_separator",
+      "label": "Afficher un séparateur (✦)",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 10,
+      "max": 60,
+      "step": 1,
+      "label": "Vitesse de défilement (en secondes)",
+      "default": 30
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Direction",
+      "options": [
+        { "value": "left", "label": "Vers la gauche" },
+        { "value": "right", "label": "Vers la droite" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Couleur de fond",
+      "default": "#0A0A0A"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Couleur du texte",
+      "default": "#D4AF37"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 12,
+      "max": 48,
+      "step": 1,
+      "label": "Taille du texte (px)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "min": 5,
+      "max": 40,
+      "step": 1,
+      "label": "Espacement vertical (padding)",
+      "default": 15
+    }
+  ],
+  "presets": [
+    {
+      "name": "Texte Défilant (Marquee)"
+    }
+  ],
+  "enabled_on": {
+    "groups": ["header", "footer"],
+    "templates": ["*"]
+  }
+}
+{% endschema %}

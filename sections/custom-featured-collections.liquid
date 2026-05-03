@@ -1,0 +1,148 @@
+<section class="km-section km-collections" id="km-collections-{{ section.id }}">
+  <div class="km-section__header">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="km-section__eyebrow">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+    {%- if section.settings.title != blank -%}
+      <h2 class="km-section__title">{{ section.settings.title }}</h2>
+    {%- endif -%}
+    <div class="km-section__divider"></div>
+  </div>
+
+  <div class="km-collections__grid">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign col_obj = collections[block.settings.collection]
+        if col_obj != empty and block.settings.collection != blank
+          assign col_title = col_obj.title
+          assign col_url   = col_obj.url
+          assign col_image = col_obj.featured_image
+        else
+          assign col_title = block.settings.fallback_title
+          assign col_url   = block.settings.fallback_url
+          assign col_image = block.settings.custom_image
+        endif
+      -%}
+
+      <a href="{{ col_url | default: '/collections' }}"
+         class="km-collection-card"
+         {{ block.shopify_attributes }}
+         aria-label="{{ col_title | default: 'Voir la collection' }}">
+
+        {%- if col_image != blank -%}
+          <img
+            class="km-collection-card__image"
+            src="{{ col_image | image_url: width: 800 }}"
+            srcset="
+              {{ col_image | image_url: width: 400 }} 400w,
+              {{ col_image | image_url: width: 800 }} 800w,
+              {{ col_image | image_url: width: 1200 }} 1200w
+            "
+            sizes="(max-width: 768px) 100vw, 50vw"
+            alt="{{ col_image.alt | default: col_title }}"
+            loading="lazy"
+            width="800"
+            height="1067"
+          >
+        {%- else -%}
+          {{ 'collection-apparel-1' | placeholder_svg_tag: 'km-collection-card__image' }}
+        {%- endif -%}
+
+        <div class="km-collection-card__overlay"></div>
+
+        <div class="km-collection-card__body">
+          {%- if block.settings.label != blank -%}
+            <span class="km-collection-card__label">{{ block.settings.label }}</span>
+          {%- endif -%}
+          <h3 class="km-collection-card__name">{{ col_title }}</h3>
+          <span class="km-collection-card__cta">
+            Découvrir
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </span>
+        </div>
+      </a>
+    {%- else -%}
+      {%- comment -%} Placeholder when no blocks added {%- endcomment -%}
+      {%- for i in (1..4) -%}
+        <div class="km-collection-card">
+          {{ 'collection-apparel-' | append: i | placeholder_svg_tag: 'km-collection-card__image' }}
+          <div class="km-collection-card__overlay"></div>
+          <div class="km-collection-card__body">
+            <span class="km-collection-card__label">Parfums</span>
+            <h3 class="km-collection-card__name">Collection {{ i }}</h3>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collections Vedettes",
+  "tag": "section",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "Nos Univers"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre de la section",
+      "default": "Collections"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_card",
+      "name": "Carte de collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection Shopify"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Image personnalisée (si pas de collection)"
+        },
+        {
+          "type": "text",
+          "id": "fallback_title",
+          "label": "Titre de remplacement",
+          "default": "Collection"
+        },
+        {
+          "type": "url",
+          "id": "fallback_url",
+          "label": "Lien de remplacement"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Étiquette (ex : Nouveauté, Exclusif)",
+          "default": "Parfums"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collections Vedettes",
+      "blocks": [
+        { "type": "collection_card" },
+        { "type": "collection_card" },
+        { "type": "collection_card" },
+        { "type": "collection_card" }
+      ]
+    }
+  ]
+}
+{% endschema %}

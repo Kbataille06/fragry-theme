@@ -1,25 +1,36 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "type": "footer",
-  "name": "t:general.footer",
+  "name": "Pied de page",
   "sections": {
-    "footer": {
-      "type": "footer",
+    "km-footer": {
+      "type": "custom-footer",
+      "blocks": {
+        "col-1": {
+          "type": "link_column",
+          "settings": {
+            "title": "Navigation"
+          }
+        },
+        "col-2": {
+          "type": "link_column",
+          "settings": {
+            "title": "Services"
+          }
+        },
+        "col-3": {
+          "type": "link_column",
+          "settings": {
+            "title": "Contact"
+          }
+        }
+      },
+      "blocks_order": ["col-1", "col-2", "col-3"],
       "settings": {
-        "menu": "",
-        "show_payment_icons": true
+        "tagline": "Fragrances d'exception pour esprits affinés."
       }
     }
   },
   "order": [
-    "footer"
+    "km-footer"
   ]
 }

@@ -1,0 +1,166 @@
+{% comment %}
+  FRAGRY — Hero Section (Dubai Luxury)
+  Fully editable via Shopify Theme Editor.
+{% endcomment %}
+
+<section class="hero" id="hero-{{ section.id }}">
+  {%- if section.settings.bg_video != blank -%}
+    <div class="hero__bg">
+      {{ section.settings.bg_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: "2400x" }}
+    </div>
+  {%- elsif section.settings.bg_image != blank -%}
+    <div class="hero__bg">
+      <img src="{{ section.settings.bg_image | image_url: width: 2400 }}" alt="" loading="eager">
+    </div>
+  {%- endif -%}
+  
+
+
+  <div class="container">
+    <div class="hero__content hero__content--align-{{ section.settings.text_alignment }}">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="hero__eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+
+      <h1 class="hero__title">
+        {{ section.settings.heading_before }}
+        {%- if section.settings.heading_accent != blank -%}
+          <em>{{ section.settings.heading_accent }}</em>
+        {%- endif -%}
+        {{ section.settings.heading_after }}
+      </h1>
+
+      {%- if section.settings.subheading != blank -%}
+        <p class="hero__text">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.cta_label != blank and section.settings.cta_url != blank -%}
+        <div class="hero__cta">
+          <a href="{{ section.settings.cta_url }}" class="btn btn--outline">
+            {{ section.settings.cta_label }} <span class="btn__icon">&gt;</span>
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="hero__products">
+        {%- for block in section.blocks -%}
+          {%- assign product = all_products[block.settings.product] -%}
+          {%- if product != empty -%}
+            <a href="{{ product.url }}" class="hero-product" {{ block.shopify_attributes }}>
+              <div class="hero-product__image">
+                <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title | escape }}" loading="lazy">
+              </div>
+              <h3 class="hero-product__title">{{ product.title }}</h3>
+              <p class="hero-product__price">{{ product.price | money }}</p>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Luxury Hero",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "video",
+      "id": "bg_video",
+      "label": "Background Video",
+      "info": "Overrides the background image if selected."
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "MAISON DE PARFUMERIE"
+    },
+    {
+      "type": "text",
+      "id": "heading_before",
+      "label": "Heading (Before Accent)",
+      "default": "L'Art du"
+    },
+    {
+      "type": "text",
+      "id": "heading_accent",
+      "label": "Heading (Accent Word)",
+      "default": "Parfum"
+    },
+    {
+      "type": "text",
+      "id": "heading_after",
+      "label": "Heading (After Accent)"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Une sélection exclusive de fragrances pour ceux qui n'acceptent que l'excellence."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button Label",
+      "default": "Explorer la Collection"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Button Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "featured_product",
+      "name": "Featured Product",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product to feature"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Hero",
+      "blocks": [
+        { "type": "featured_product" },
+        { "type": "featured_product" }
+      ]
+    }
+  ]
+}
+{% endschema %}

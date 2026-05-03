@@ -1,0 +1,224 @@
+{% comment %}
+  FRAGRY — Best Sellers
+  Vanilla JS pour le panier (pas d'Alpine dans les attributs HTML)
+  afin d'éviter tout conflit de parsing Liquid/JS.
+{% endcomment %}
+
+<section class="km-section km-best-sellers" id="best-sellers-{{ section.id }}">
+
+  <div class="km-section__header">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="km-section__eyebrow">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+    {%- if section.settings.title != blank -%}
+      <h2 class="km-section__title">{{ section.settings.title }}</h2>
+    {%- endif -%}
+    <div class="km-section__divider"></div>
+  </div>
+
+  {%- assign source = collections[section.settings.collection] -%}
+
+  <div class="km-products-grid">
+
+    {%- for product in source.products limit: section.settings.products_count -%}
+      {%- assign variant_id = product.variants.first.id -%}
+
+      <article
+        class="km-product-card"
+        data-variant-id="{{ variant_id }}"
+        aria-label="{{ product.title | escape }}"
+      >
+
+        <div class="km-product-card__image-wrap">
+          {%- if product.featured_image -%}
+            <img
+              class="km-product-card__image"
+              src="{{ product.featured_image | image_url: width: 600 }}"
+              srcset="
+                {{ product.featured_image | image_url: width: 400 }} 400w,
+                {{ product.featured_image | image_url: width: 600 }} 600w,
+                {{ product.featured_image | image_url: width: 900 }} 900w
+              "
+              sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              alt="{{ product.featured_image.alt | default: product.title | escape }}"
+              loading="lazy"
+              width="600"
+              height="800"
+            >
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'km-product-card__image' }}
+          {%- endif -%}
+
+          {%- if product.compare_at_price > product.price -%}
+            <span class="km-product-card__badge">Promo</span>
+          {%- elsif product.tags contains 'nouveau' or product.tags contains 'new' -%}
+            <span class="km-product-card__badge">Nouveau</span>
+          {%- endif -%}
+
+          {%- assign notes = '' -%}
+          {%- for tag in product.tags -%}
+            {%- if tag contains 'note:' -%}{%- assign notes = tag | remove: 'note:' -%}{%- endif -%}
+          {%- endfor -%}
+          <div class="km-product-notes">
+            <p class="km-product-notes__label">Notes Olfactives</p>
+            <p class="km-product-notes__value">{{ notes | default: 'Oud · Rose · Musc' }}</p>
+          </div>
+        </div>
+
+        <div style="padding: 12px 0 4px;">
+          {%- if product.vendor != blank -%}
+            <p class="km-product-card__vendor">{{ product.vendor }}</p>
+          {%- endif -%}
+          <a href="{{ product.url }}" class="km-product-card__title" style="display:block;">
+            {{ product.title }}
+          </a>
+        </div>
+
+        <div class="km-product-card__meta">
+          <p class="km-product-card__price">
+            {%- if product.compare_at_price > product.price -%}
+              <span class="km-product-card__price-compare">{{ product.compare_at_price | money }}</span>
+            {%- endif -%}
+            {{ product.price | money }}
+          </p>
+
+          <button
+            type="button"
+            class="km-product-card__add-btn"
+            data-add-to-cart
+            aria-label="Ajouter {{ product.title | escape }} au panier"
+          >
+            <span data-state="idle">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <path d="M16 10a4 4 0 0 1-8 0"/>
+              </svg>
+            </span>
+          </button>
+        </div>
+
+      </article>
+
+    {%- else -%}
+      {%- for i in (1..4) -%}
+        <div class="km-product-card">
+          <div class="km-product-card__image-wrap">
+            {{ 'product-1' | placeholder_svg_tag: 'km-product-card__image' }}
+          </div>
+          <div style="padding: 12px 0 4px;">
+            <p class="km-product-card__vendor">Maison</p>
+            <p class="km-product-card__title">Fragrance {{ i }}</p>
+          </div>
+          <div class="km-product-card__meta">
+            <p class="km-product-card__price">{{ 9500 | money }}</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endfor -%}
+
+  </div>
+
+  {%- if section.settings.cta_label != blank and section.settings.cta_url != blank -%}
+    <div style="text-align: center; margin-top: var(--spacing-lg);">
+      <a href="{{ section.settings.cta_url }}" class="km-btn km-btn--ghost">
+        {{ section.settings.cta_label }}
+      </a>
+    </div>
+  {%- endif -%}
+
+</section>
+
+<script>
+(function() {
+  var grid = document.getElementById('best-sellers-{{ section.id }}');
+  if (!grid) return;
+
+  grid.querySelectorAll('[data-add-to-cart]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var card = btn.closest('[data-variant-id]');
+      if (!card || btn.disabled) return;
+
+      var variantId = Number(card.dataset.variantId);
+      btn.disabled = true;
+      btn.classList.add('km-product-card__add-btn--loading');
+
+      fetch(window.Shopify.routes.root + 'cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: variantId, quantity: 1 })
+      })
+      .then(function(res) {
+        if (res.ok) {
+          btn.classList.remove('km-product-card__add-btn--loading');
+          btn.classList.add('km-product-card__add-btn--added');
+          btn.setAttribute('aria-label', 'Ajouté au panier !');
+          setTimeout(function() {
+            btn.classList.remove('km-product-card__add-btn--added');
+            btn.disabled = false;
+            btn.setAttribute('aria-label', 'Ajouter au panier');
+          }, 2000);
+        } else {
+          btn.disabled = false;
+          btn.classList.remove('km-product-card__add-btn--loading');
+        }
+      })
+      .catch(function() {
+        btn.disabled = false;
+        btn.classList.remove('km-product-card__add-btn--loading');
+      });
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Best Sellers",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "Nos Favoris"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre de la section",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection source des produits"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "label": "Nombre de produits affichés",
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Texte du bouton",
+      "default": "Voir tous les produits"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Lien du bouton"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best Sellers"
+    }
+  ]
+}
+{% endschema %}
