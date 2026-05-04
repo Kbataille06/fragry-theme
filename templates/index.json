@@ -47,11 +47,25 @@
         "cta_label": "Voir tous les produits",
         "cta_url": ""
       }
+    },
+    "custom_best_sellers_BCLAzd": {
+      "type": "custom-best-sellers",
+      "name": "Best Sellers",
+      "settings": {
+        "color_scheme": "light",
+        "eyebrow": "",
+        "title": "Pour Lui",
+        "collection": "homme",
+        "products_count": 8,
+        "cta_label": "Voir tous les parfums Homme",
+        "cta_url": ""
+      }
     }
   },
   "order": [
     "hero",
     "best_sellers",
-    "custom_best_sellers_e97ReD"
+    "custom_best_sellers_e97ReD",
+    "custom_best_sellers_BCLAzd"
   ]
 }
