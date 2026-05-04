@@ -1635,6 +1635,14 @@ img {
    COLLECTION PAGE — PREMIUM
    ============================================================ */
 
+/* Full-page dark wrapper — ensures consistent dark bg regardless of body */
+.km-collection-page {
+  background-color: #0a0a0a;
+  color: #f5f0ea;
+  min-height: 60vh;
+  width: 100%;
+}
+
 /* ── Hero ── */
 .km-col-hero {
   position: relative;
@@ -1754,7 +1762,7 @@ img {
 .km-col-toolbar__count {
   font-family: var(--font-body);
   font-size: 0.75rem;
-  color: rgba(245,240,234,0.4);
+  color: rgba(245,240,234,0.65);
   letter-spacing: 0.1em;
 }
 
@@ -1773,7 +1781,7 @@ img {
   font-size: 0.65rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(245,240,234,0.35);
+  color: rgba(245,240,234,0.6);
   font-family: var(--font-body);
 }
 
@@ -1785,9 +1793,9 @@ img {
 
 .km-col-toolbar__select {
   appearance: none;
-  background: rgba(212,175,55,0.05);
-  border: 1px solid rgba(212,175,55,0.2);
-  color: rgba(245,240,234,0.8);
+  background: rgba(212,175,55,0.08);
+  border: 1px solid rgba(212,175,55,0.35);
+  color: rgba(245,240,234,0.9);
   font-family: var(--font-body);
   font-size: 0.72rem;
   letter-spacing: 0.1em;
@@ -1796,17 +1804,23 @@ img {
   border-radius: 2px;
   outline: none;
   transition: border-color 0.25s;
+  color-scheme: dark;
 }
 
 .km-col-toolbar__select:focus {
   border-color: var(--c-accent-gold);
 }
 
+.km-col-toolbar__select option {
+  background: #1a1a1a;
+  color: #f5f0ea;
+}
+
 .km-col-toolbar__chevron {
   position: absolute;
   right: 10px;
   pointer-events: none;
-  color: rgba(212,175,55,0.6);
+  color: rgba(212,175,55,0.8);
 }
 
 /* ── Section wrapper ── */

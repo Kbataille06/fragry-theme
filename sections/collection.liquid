@@ -3,6 +3,8 @@
 {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
 {%- assign current_tags = current_tags | default: blank -%}
 
+<div class="km-collection-page">
+
 <!-- ── Hero Banner ── -->
 <section class="km-col-hero">
   <div class="km-col-hero__bg"></div>
@@ -193,6 +195,8 @@
   {% endif %}
   {% endpaginate %}
 </div>
+
+</div>{{- '<!-- /km-collection-page -->' -}}
 
 <script>
 (function () {
