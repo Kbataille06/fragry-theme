@@ -1,4 +1,5 @@
-<div class="km-band km-band--dark">
+<div class="km-band km-band--{{ section.settings.color_scheme }}"
+     id="band-collections-{{ section.id }}">
 <section class="km-section km-collections" id="km-collections-{{ section.id }}">
   <div class="km-section__header">
     {%- if section.settings.eyebrow != blank -%}
@@ -87,6 +88,16 @@
   "tag": "section",
   "max_blocks": 4,
   "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Palette de couleurs",
+      "options": [
+        { "value": "light", "label": "🤍 Fond clair (ivoire)" },
+        { "value": "dark",  "label": "🖤 Fond sombre (noir)" }
+      ],
+      "default": "dark"
+    },
     {
       "type": "text",
       "id": "eyebrow",

@@ -1,4 +1,4 @@
-<div class="custom-section full-width">
+<div class="custom-section full-width km-band km-band--{{ section.settings.color_scheme }}">
   {% if section.settings.background_image %}
     <div class="custom-section__background">
       {{ section.settings.background_image | image_url: width: 2000 | image_tag }}
@@ -15,6 +15,8 @@
     position: relative;
     overflow: hidden;
     width: 100%;
+    background-color: var(--band-bg);
+    color: var(--band-text);
   }
   .custom-section__background {
     position: absolute;
@@ -45,6 +47,16 @@
   "name": "t:general.custom_section",
   "blocks": [{ "type": "@theme" }],
   "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Palette de couleurs",
+      "options": [
+        { "value": "light", "label": "🤍 Fond clair (ivoire)" },
+        { "value": "dark",  "label": "🖤 Fond sombre (noir)" }
+      ],
+      "default": "light"
+    },
     {
       "type": "image_picker",
       "id": "background_image",
