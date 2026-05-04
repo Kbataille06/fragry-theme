@@ -10,8 +10,10 @@
 {
   "sections": {
     "main": {
-      "type": "product",
-      "settings": {}
+      "type": "custom-product",
+      "settings": {
+        "color_scheme": "dark"
+      }
     }
   },
   "order": [

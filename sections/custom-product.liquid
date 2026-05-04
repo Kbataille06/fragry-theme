@@ -1,0 +1,251 @@
+<div class="km-band km-band--{{ section.settings.color_scheme }}" id="band-product-{{ section.id }}">
+  <section class="km-section km-product" id="km-product-{{ section.id }}">
+    <div class="km-product__inner">
+      
+      <!-- ── Media Column (Left) ── -->
+      <div class="km-product__media">
+        <div class="km-product__gallery">
+          {% if product.images.size > 0 %}
+            {% for image in product.images %}
+              <div class="km-product__image-wrap">
+                <img
+                  src="{{ image | image_url: width: 1000 }}"
+                  srcset="{{ image | image_url: width: 600 }} 600w, {{ image | image_url: width: 1000 }} 1000w, {{ image | image_url: width: 1400 }} 1400w"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  alt="{{ image.alt | escape | default: product.title }}"
+                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  class="km-product__img"
+                  width="{{ image.width }}"
+                  height="{{ image.height }}"
+                >
+              </div>
+            {% endfor %}
+          {% else %}
+            <!-- Placeholder -->
+            <div class="km-product__placeholder">
+               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                  <polyline points="21 15 16 10 5 21"/>
+                </svg>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- ── Info Column (Right) ── -->
+      <div class="km-product__info">
+        <div class="km-product__info-sticky">
+          
+          <!-- Breadcrumb -->
+          <nav class="km-product__breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Accueil</a>
+            <span aria-hidden="true">/</span>
+            <a href="/collections/all">Parfums</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">{{ product.title }}</span>
+          </nav>
+
+          {% if product.vendor %}
+            <p class="km-product__vendor">{{ product.vendor }}</p>
+          {% endif %}
+          
+          <h1 class="km-product__title">{{ product.title }}</h1>
+          
+          <div class="km-product__price-wrap" id="price-{{ section.id }}">
+            <span class="km-product__price">{{ product.price | money }}</span>
+            {% if product.compare_at_price > product.price %}
+              <s class="km-product__price-compare">{{ product.compare_at_price | money }}</s>
+              <span class="km-product__price-badge">Offre spéciale</span>
+            {% endif %}
+          </div>
+
+          <!-- Product Form -->
+          {%- assign product_form_id = 'product-form-' | append: section.id -%}
+          {% form 'product', product, id: product_form_id, class: 'km-product__form', novalidate: 'novalidate', data-type: 'add-to-cart-form' %}
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+            {% unless product.has_only_default_variant %}
+              <div class="km-product__variants">
+                <label class="km-product__label" for="Variants-{{ section.id }}">Taille</label>
+                <div class="km-select-wrapper">
+                  <select class="km-select" id="Variants-{{ section.id }}" name="id" form="{{ product_form_id }}">
+                    {% for variant in product.variants %}
+                      <option
+                        {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
+                        {% if variant.available == false %}disabled{% endif %}
+                        value="{{ variant.id }}"
+                        data-price="{{ variant.price | money }}"
+                        data-compare-price="{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money }}{% endif %}"
+                      >
+                        {{ variant.title }}
+                        {%- if variant.available == false %} - Épuisé{% endif %}
+                      </option>
+                    {% endfor %}
+                  </select>
+                  <svg class="km-select__chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+              </div>
+            {% endunless %}
+
+            <div class="km-product__actions">
+              <div class="km-product__quantity">
+                <label class="km-product__label km-visually-hidden" for="Quantity-{{ section.id }}">Quantité</label>
+                <button type="button" class="km-qty-btn km-qty-btn--minus" aria-label="Diminuer la quantité">-</button>
+                <input class="km-qty-input" type="number" name="quantity" id="Quantity-{{ section.id }}" value="1" min="1" max="99">
+                <button type="button" class="km-qty-btn km-qty-btn--plus" aria-label="Augmenter la quantité">+</button>
+              </div>
+
+              <button
+                type="submit"
+                name="add"
+                class="btn btn--primary km-product__atc"
+                {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}
+              >
+                {% if product.selected_or_first_available_variant.available %}
+                  Ajouter au panier
+                {% else %}
+                  En rupture de stock
+                {% endif %}
+              </button>
+            </div>
+          {% endform %}
+
+          <!-- Accordions -->
+          <div class="km-product__accordions">
+            {% if product.description != blank %}
+              <details class="km-accordion" open>
+                <summary class="km-accordion__header">
+                  <span>Description</span>
+                  <svg class="km-accordion__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
+                </summary>
+                <div class="km-accordion__content">
+                  <div class="km-rte">{{ product.description }}</div>
+                </div>
+              </details>
+            {% endif %}
+
+            {% if section.settings.shipping_text != blank %}
+              <details class="km-accordion">
+                <summary class="km-accordion__header">
+                  <span>Livraison & Retours</span>
+                  <svg class="km-accordion__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
+                </summary>
+                <div class="km-accordion__content">
+                  <div class="km-rte">{{ section.settings.shipping_text }}</div>
+                </div>
+              </details>
+            {% endif %}
+            
+            {% if section.settings.usage_text != blank %}
+              <details class="km-accordion">
+                <summary class="km-accordion__header">
+                  <span>Conseils d'utilisation</span>
+                  <svg class="km-accordion__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
+                </summary>
+                <div class="km-accordion__content">
+                  <div class="km-rte">{{ section.settings.usage_text }}</div>
+                </div>
+              </details>
+            {% endif %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // ── Variant Selection ──
+  const variantSelect = document.getElementById('Variants-{{ section.id }}');
+  const priceContainer = document.getElementById('price-{{ section.id }}');
+  const atcBtn = document.querySelector('.km-product__atc');
+  const formHiddenInput = document.querySelector('input[name="id"]');
+  
+  if (variantSelect) {
+    variantSelect.addEventListener('change', function() {
+      const selectedOption = this.options[this.selectedIndex];
+      const newPrice = selectedOption.dataset.price;
+      const newComparePrice = selectedOption.dataset.comparePrice;
+      const isAvailable = !selectedOption.disabled;
+      
+      // Update hidden input
+      formHiddenInput.value = this.value;
+      
+      // Update Price HTML
+      let priceHTML = `<span class="km-product__price">${newPrice}</span>`;
+      if (newComparePrice) {
+        priceHTML += ` <s class="km-product__price-compare">${newComparePrice}</s> <span class="km-product__price-badge">Offre spéciale</span>`;
+      }
+      priceContainer.innerHTML = priceHTML;
+      
+      // Update Button state
+      if (isAvailable) {
+        atcBtn.removeAttribute('disabled');
+        atcBtn.textContent = 'Ajouter au panier';
+      } else {
+        atcBtn.setAttribute('disabled', 'disabled');
+        atcBtn.textContent = 'En rupture de stock';
+      }
+    });
+  }
+
+  // ── Quantity Logic ──
+  const qtyInput = document.getElementById('Quantity-{{ section.id }}');
+  const btnMinus = document.querySelector('.km-qty-btn--minus');
+  const btnPlus = document.querySelector('.km-qty-btn--plus');
+
+  if (qtyInput && btnMinus && btnPlus) {
+    btnMinus.addEventListener('click', function() {
+      let currentVal = parseInt(qtyInput.value) || 1;
+      if (currentVal > 1) qtyInput.value = currentVal - 1;
+    });
+    
+    btnPlus.addEventListener('click', function() {
+      let currentVal = parseInt(qtyInput.value) || 1;
+      qtyInput.value = currentVal + 1;
+    });
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Produit",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Palette de couleurs",
+      "options": [
+        { "value": "light", "label": "🤍 Fond clair (ivoire)" },
+        { "value": "dark",  "label": "🖤 Fond sombre (noir)" }
+      ],
+      "default": "dark"
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_text",
+      "label": "Texte de Livraison",
+      "default": "<p>Expédition sous 24h. Livraison gratuite à partir de 100€ d'achat.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "usage_text",
+      "label": "Conseils d'utilisation",
+      "default": "<p>Vaporisez sur les points de pulsation (poignets, cou, derrière les oreilles) à une distance de 20cm.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Produit",
+      "settings": {
+        "color_scheme": "dark"
+      }
+    }
+  ]
+}
+{% endschema %}
