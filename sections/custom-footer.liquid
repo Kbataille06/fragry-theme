@@ -3,7 +3,20 @@
 
     {%- comment -%} Brand column {%- endcomment -%}
     <div class="km-footer__brand">
-      <span class="km-footer__logo">{{ section.settings.store_name | default: shop.name }}</span>
+      {%- if section.settings.logo_image != blank -%}
+        <a href="{{ routes.root_url }}" class="km-footer__logo-link" aria-label="{{ shop.name }}">
+          <img
+            src="{{ section.settings.logo_image | image_url: width: 300 }}"
+            alt="{{ shop.name }}"
+            width="{{ section.settings.logo_image.width }}"
+            height="{{ section.settings.logo_image.height }}"
+            class="km-footer__logo-img"
+            loading="lazy"
+          >
+        </a>
+      {%- else -%}
+        <span class="km-footer__logo">{{ section.settings.store_name | default: shop.name }}</span>
+      {%- endif -%}
       {%- if section.settings.tagline != blank -%}
         <p class="km-footer__tagline">{{ section.settings.tagline }}</p>
       {%- endif -%}
@@ -11,7 +24,7 @@
       <div class="km-footer__socials">
         {%- if section.settings.instagram_url != blank -%}
           <a href="{{ section.settings.instagram_url }}" class="km-footer__social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
               <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
               <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
@@ -21,7 +34,7 @@
 
         {%- if section.settings.facebook_url != blank -%}
           <a href="{{ section.settings.facebook_url }}" class="km-footer__social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
             </svg>
           </a>
@@ -29,8 +42,9 @@
 
         {%- if section.settings.tiktok_url != blank -%}
           <a href="{{ section.settings.tiktok_url }}" class="km-footer__social-link" aria-label="TikTok" target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+              <path d="M14 4h3"/>
             </svg>
           </a>
         {%- endif -%}
@@ -79,9 +93,16 @@
   "max_blocks": 3,
   "settings": [
     {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo image (prioritaire sur le texte)",
+      "info": "Si une image est sélectionnée, elle remplace le texte du nom."
+    },
+    {
       "type": "text",
       "id": "store_name",
-      "label": "Nom de la boutique (logo texte)"
+      "label": "Nom de la boutique (logo texte)",
+      "info": "Utilisé uniquement si aucune image logo n'est sélectionnée."
     },
     {
       "type": "textarea",
