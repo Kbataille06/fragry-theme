@@ -726,12 +726,115 @@ img {
   font-size: 0.8rem;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   ALTERNATING SECTION BANDS — Dark / Light
+   Usage in liquid: wrap <section> inside <div class="km-band km-band--light">
+   ───────────────────────────────────────────────────────────── */
+
+/* Band tokens */
+.km-band {
+  width: 100%;
+  --band-bg:      #F5F0EA;
+  --band-text:    var(--c-text-dark);
+  --band-muted:   #7C766B;
+  --band-border:  rgba(0, 0, 0, 0.08);
+  --band-card-bg: #FFFFFF;
+  --band-card-border: rgba(212, 175, 55, 0.4);
+  background-color: var(--band-bg);
+  color: var(--band-text);
+}
+
+.km-band--light {
+  --band-bg:      #F5F0EA;
+  --band-text:    #1A1A1A;
+  --band-muted:   #7C766B;
+  --band-border:  rgba(0, 0, 0, 0.08);
+  --band-card-bg: #FFFFFF;
+  --band-card-border: rgba(212, 175, 55, 0.5);
+}
+
+.km-band--dark {
+  --band-bg:      #0D0D0D;
+  --band-text:    #F5F0EA;
+  --band-muted:   rgba(245, 240, 234, 0.5);
+  --band-border:  rgba(255, 255, 255, 0.08);
+  --band-card-bg: #1A1A1A;
+  --band-card-border: rgba(212, 175, 55, 0.4);
+}
+
+/* Section inner wrapper (max-width centering stays here) */
 /* BEST SELLERS & PRODUCT CARDS */
 .km-section {
   padding: var(--space-xl) var(--space-md);
   max-width: 1200px;
   margin: 0 auto;
 }
+
+/* Eyebrow & title inherit band text color */
+.km-band .km-section__eyebrow {
+  color: var(--band-muted);
+}
+
+.km-band .km-section__title {
+  color: var(--band-text);
+}
+
+.km-band .km-section__divider {
+  background-color: var(--c-accent-gold);
+}
+
+/* Product card adapts to band */
+.km-band .km-product-card__image-wrap {
+  background: var(--band-card-bg);
+  border-color: var(--band-card-border);
+}
+
+.km-band .km-product-card__title,
+.km-band .km-product-card__vendor {
+  color: var(--band-text);
+}
+
+.km-band .km-product-card__price {
+  color: var(--c-accent-gold);
+}
+
+/* Add-to-cart button adapts to band */
+.km-band--light .km-product-card__add-btn {
+  background: var(--c-bg-dark);
+  color: var(--c-text-light);
+  border-color: var(--c-bg-dark);
+}
+
+.km-band--light .km-product-card__add-btn:hover {
+  background: var(--c-accent-gold);
+  border-color: var(--c-accent-gold);
+  color: var(--c-bg-dark);
+}
+
+/* Rich-text section adapts to band */
+.km-band .km-rich-text__eyebrow {
+  color: var(--band-muted);
+}
+
+.km-band .km-rich-text__title {
+  color: var(--band-text);
+}
+
+.km-band .km-rich-text__body,
+.km-band .km-rich-text__body p {
+  color: var(--band-muted);
+}
+
+/* Collections section on dark band */
+.km-band--dark .km-collections {
+  color: var(--band-text);
+}
+
+/* Subtle top separator between bands for polish */
+.km-band + .km-band {
+  border-top: 1px solid transparent;
+}
+
 
 .km-section__header {
   text-align: center;
