@@ -60,12 +60,28 @@
         "cta_label": "Voir tous les parfums Homme",
         "cta_url": ""
       }
+    },
+    "1777970573218aaab4": {
+      "type": "apps",
+      "blocks": {
+        "gsc_instagram_feed_instafeed_cAzQCz": {
+          "type": "shopify://apps/gsc-instagram-feed/blocks/instafeed/96970b1b-b770-454f-b16b-51f47e1aa4ed",
+          "settings": {
+            "widget_id": "GSC-GhuHLScqlybycuh"
+          }
+        }
+      },
+      "block_order": [
+        "gsc_instagram_feed_instafeed_cAzQCz"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "hero",
     "best_sellers",
     "custom_best_sellers_e97ReD",
-    "custom_best_sellers_BCLAzd"
+    "custom_best_sellers_BCLAzd",
+    "1777970573218aaab4"
   ]
 }
