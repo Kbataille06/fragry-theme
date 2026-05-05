@@ -45,7 +45,7 @@
         "collection": "femme",
         "products_count": 8,
         "cta_label": "Voir tous les parfums Femme",
-        "cta_url": ""
+        "cta_url": "shopify://collections/femme"
       }
     },
     "custom_best_sellers_BCLAzd": {
@@ -58,7 +58,20 @@
         "collection": "homme",
         "products_count": 8,
         "cta_label": "Voir tous les parfums Homme",
-        "cta_url": ""
+        "cta_url": "shopify://collections/homme"
+      }
+    },
+    "custom_best_sellers_we86D6": {
+      "type": "custom-best-sellers",
+      "name": "Best Sellers",
+      "settings": {
+        "color_scheme": "dark",
+        "eyebrow": "",
+        "title": "Nos coffrets",
+        "collection": "homme",
+        "products_count": 4,
+        "cta_label": "Voir tous les coffrets et packs",
+        "cta_url": "shopify://collections/coffrets"
       }
     },
     "1777970573218aaab4": {
@@ -89,6 +102,7 @@
     "best_sellers",
     "custom_best_sellers_e97ReD",
     "custom_best_sellers_BCLAzd",
+    "custom_best_sellers_we86D6",
     "1777970573218aaab4"
   ]
 }
