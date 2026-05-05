@@ -99,9 +99,9 @@ img {
   font-size: 0.9rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  background: var(--c-accent-gold);
-  color: var(--c-bg-dark);
-  border: 1px solid var(--c-accent-gold);
+  background: var(--band-btn-bg, var(--c-accent-gold));
+  color: var(--band-btn-text, var(--c-bg-dark));
+  border: 1px solid var(--band-btn-border, var(--c-accent-gold));
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -124,7 +124,7 @@ img {
 
 .btn:hover {
   background: transparent;
-  color: var(--c-accent-gold);
+  color: var(--band-btn-hover-text, var(--c-accent-gold));
 }
 
 .btn:hover::before {
@@ -757,6 +757,10 @@ img {
   --band-border:  rgba(0, 0, 0, 0.08);
   --band-card-bg: #FFFFFF;
   --band-card-border: rgba(212, 175, 55, 0.5);
+  --band-btn-bg:  #1A1A1A;
+  --band-btn-text: #F5F0EA;
+  --band-btn-border: #1A1A1A;
+  --band-btn-hover-text: #1A1A1A;
 }
 
 .km-band--dark {
@@ -766,6 +770,10 @@ img {
   --band-border:  rgba(255, 255, 255, 0.08);
   --band-card-bg: #1A1A1A;
   --band-card-border: rgba(212, 175, 55, 0.4);
+  --band-btn-bg:  var(--c-accent-gold);
+  --band-btn-text: #0D0D0D;
+  --band-btn-border: var(--c-accent-gold);
+  --band-btn-hover-text: var(--c-accent-gold);
 }
 
 /* Section inner wrapper (max-width centering stays here) */
