@@ -69,10 +69,17 @@
           "settings": {
             "widget_id": "GSC-GhuHLScqlybycuh"
           }
+        },
+        "google_reviews_rocket_app_block_4e3GNE": {
+          "type": "shopify://apps/google-reviews-rocket/blocks/app-block/d11c8893-a181-4aff-a280-7446d42cec3b",
+          "settings": {
+            "widget_layout": "default"
+          }
         }
       },
       "block_order": [
-        "gsc_instagram_feed_instafeed_cAzQCz"
+        "gsc_instagram_feed_instafeed_cAzQCz",
+        "google_reviews_rocket_app_block_4e3GNE"
       ],
       "settings": {}
     }
