@@ -6,20 +6,38 @@
       <div class="km-product__media">
         <div class="km-product__gallery">
           {% if product.images.size > 0 %}
-            {% for image in product.images %}
-              <div class="km-product__image-wrap">
-                <img
-                  src="{{ image | image_url: width: 1000 }}"
-                  srcset="{{ image | image_url: width: 600 }} 600w, {{ image | image_url: width: 1000 }} 1000w, {{ image | image_url: width: 1400 }} 1400w"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  alt="{{ image.alt | escape | default: product.title }}"
-                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                  class="km-product__img"
-                  width="{{ image.width }}"
-                  height="{{ image.height }}"
-                >
+            <div class="km-product__main-image-wrap">
+              <img
+                src="{{ product.images.first | image_url: width: 1000 }}"
+                srcset="{{ product.images.first | image_url: width: 600 }} 600w, {{ product.images.first | image_url: width: 1000 }} 1000w, {{ product.images.first | image_url: width: 1400 }} 1400w"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                alt="{{ product.images.first.alt | escape | default: product.title }}"
+                loading="eager"
+                class="km-product__main-img"
+                id="main-product-image-{{ section.id }}"
+                width="{{ product.images.first.width }}"
+                height="{{ product.images.first.height }}"
+              >
+            </div>
+            
+            {% if product.images.size > 1 %}
+              <div class="km-product__thumbnails">
+                {% for image in product.images %}
+                  <div class="km-product__thumbnail-wrap {% if forloop.first %}is-active{% endif %}" 
+                       data-src="{{ image | image_url: width: 1000 }}"
+                       data-srcset="{{ image | image_url: width: 600 }} 600w, {{ image | image_url: width: 1000 }} 1000w, {{ image | image_url: width: 1400 }} 1400w">
+                    <img
+                      src="{{ image | image_url: width: 160 }}"
+                      alt="{{ image.alt | escape | default: product.title }}"
+                      loading="lazy"
+                      class="km-product__thumbnail-img"
+                      width="{{ image.width }}"
+                      height="{{ image.height }}"
+                    >
+                  </div>
+                {% endfor %}
               </div>
-            {% endfor %}
+            {% endif %}
           {% else %}
             <!-- Placeholder -->
             <div class="km-product__placeholder">
@@ -47,7 +65,7 @@
           </nav>
 
           {% if product.vendor %}
-            <p class="km-product__vendor">{{ product.vendor }}</p>
+            <p class="km-product__vendor">Fournisseur : {{ product.vendor }}</p>
           {% endif %}
           
           <h1 class="km-product__title">{{ product.title }}</h1>
@@ -158,6 +176,29 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  // ── Gallery Logic ──
+  const mainImage = document.getElementById('main-product-image-{{ section.id }}');
+  const thumbnails = document.querySelectorAll('.km-product__thumbnail-wrap');
+  
+  if (mainImage && thumbnails.length > 0) {
+    thumbnails.forEach(thumb => {
+      thumb.addEventListener('click', function() {
+        thumbnails.forEach(t => t.classList.remove('is-active'));
+        this.classList.add('is-active');
+        
+        const newSrc = this.dataset.src;
+        const newSrcset = this.dataset.srcset;
+        
+        mainImage.style.opacity = '0.5';
+        setTimeout(() => {
+          if (newSrc) mainImage.src = newSrc;
+          if (newSrcset) mainImage.srcset = newSrcset;
+          mainImage.style.opacity = '1';
+        }, 150);
+      });
+    });
+  }
+
   // ── Variant Selection ──
   const variantSelect = document.getElementById('Variants-{{ section.id }}');
   const priceContainer = document.getElementById('price-{{ section.id }}');
