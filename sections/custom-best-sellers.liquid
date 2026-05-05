@@ -31,7 +31,7 @@
         aria-label="{{ product.title | escape }}"
       >
 
-        <div class="km-product-card__image-wrap">
+        <a href="{{ product.url }}" class="km-product-card__image-wrap">
           {%- if product.featured_image -%}
             {%- comment -%} Image principale {%- endcomment -%}
             <img
@@ -84,7 +84,7 @@
             <p class="km-product-notes__label">Notes Olfactives</p>
             <p class="km-product-notes__value">{{ notes | default: 'Oud · Rose · Musc' }}</p>
           </div>
-        </div>
+        </a>
 
         <div class="km-product-card__body">
           {%- if product.vendor != blank -%}
