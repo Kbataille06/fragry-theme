@@ -45,7 +45,7 @@
         "collection": "femme",
         "products_count": 8,
         "cta_label": "Voir tous les parfums Femme",
-        "cta_url": ""
+        "cta_url": "shopify://collections/femme"
       }
     },
     "custom_best_sellers_BCLAzd": {
@@ -58,14 +58,51 @@
         "collection": "homme",
         "products_count": 8,
         "cta_label": "Voir tous les parfums Homme",
-        "cta_url": ""
+        "cta_url": "shopify://collections/homme"
       }
+    },
+    "custom_best_sellers_we86D6": {
+      "type": "custom-best-sellers",
+      "name": "Best Sellers",
+      "settings": {
+        "color_scheme": "dark",
+        "eyebrow": "",
+        "title": "Nos coffrets",
+        "collection": "homme",
+        "products_count": 4,
+        "cta_label": "Voir tous les coffrets et packs",
+        "cta_url": "shopify://collections/coffrets"
+      }
+    },
+    "1777970573218aaab4": {
+      "type": "apps",
+      "blocks": {
+        "google_reviews_rocket_app_block_4e3GNE": {
+          "type": "shopify://apps/google-reviews-rocket/blocks/app-block/d11c8893-a181-4aff-a280-7446d42cec3b",
+          "settings": {
+            "widget_layout": "default"
+          }
+        },
+        "gsc_instagram_feed_instafeed_cAzQCz": {
+          "type": "shopify://apps/gsc-instagram-feed/blocks/instafeed/96970b1b-b770-454f-b16b-51f47e1aa4ed",
+          "settings": {
+            "widget_id": "GSC-GhuHLScqlybycuh"
+          }
+        }
+      },
+      "block_order": [
+        "google_reviews_rocket_app_block_4e3GNE",
+        "gsc_instagram_feed_instafeed_cAzQCz"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "hero",
     "best_sellers",
     "custom_best_sellers_e97ReD",
-    "custom_best_sellers_BCLAzd"
+    "custom_best_sellers_BCLAzd",
+    "custom_best_sellers_we86D6",
+    "1777970573218aaab4"
   ]
 }
