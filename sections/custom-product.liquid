@@ -208,6 +208,23 @@ document.addEventListener('DOMContentLoaded', function() {
       qtyInput.value = currentVal + 1;
     });
   }
+
+  // ── AJAX Add to Cart ──
+  const productForm = document.getElementById('product-form-{{ section.id }}');
+  if (productForm) {
+    productForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const variantId = formHiddenInput.value;
+      const qty = qtyInput ? (parseInt(qtyInput.value) || 1) : 1;
+      
+      if (typeof window.fragryAddToCart === 'function') {
+        window.fragryAddToCart(variantId, atcBtn, qty);
+      } else {
+        productForm.submit();
+      }
+    });
+  }
 });
 </script>
 

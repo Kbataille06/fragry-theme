@@ -604,7 +604,6 @@ img {
   background-color: var(--c-bg-dark);
   color: var(--c-text-light);
   padding: var(--space-xl) var(--space-md) var(--space-md);
-  margin-top: var(--space-xl);
 }
 
 .km-footer__inner {
@@ -2269,6 +2268,7 @@ img {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  margin-bottom: 2rem;
 }
 
 .km-product__breadcrumb a {
@@ -2374,6 +2374,7 @@ img {
   border: 1px solid rgba(212,175,55,0.3);
   height: 50px;
   width: max-content;
+  padding: 0 1rem;
 }
 
 .km-qty-btn {

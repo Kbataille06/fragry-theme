@@ -296,7 +296,7 @@
   /* ──────────────────────────────────────────
      ADD TO CART global (déclenché par Best Sellers et autres sections)
   ────────────────────────────────────────── */
-  window.fragryAddToCart = function (variantId, btn) {
+  window.fragryAddToCart = function (variantId, btn, quantity = 1) {
     if (!variantId || (btn && btn.disabled)) return;
 
     if (btn) {
@@ -313,7 +313,7 @@
     fetch('/cart/add.js', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: variantId, quantity: 1 })
+      body: JSON.stringify({ id: variantId, quantity: quantity })
     })
     .then(function (res) {
       if (!res.ok) throw new Error('add-to-cart failed');
