@@ -18,11 +18,29 @@
     <nav aria-label="Navigation principale">
       <ul class="km-header__nav km-header__nav--left">
         {%- for link in linklists[section.settings.menu_left].links -%}
-          <li>
-            <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>
-              {{ link.title }}
-            </a>
-          </li>
+          {%- if link.links != blank -%}
+            <li class="km-header__has-dropdown">
+              <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %} class="km-header__dropdown-trigger">
+                {{ link.title }}
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:4px;vertical-align:middle;"><path d="M6 9l6 6 6-6"/></svg>
+              </a>
+              <ul class="km-header__dropdown">
+                {%- for childlink in link.links -%}
+                  <li>
+                    <a href="{{ childlink.url }}" {% if childlink.active %}aria-current="page"{% endif %}>
+                      {{ childlink.title }}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </li>
+          {%- else -%}
+            <li>
+              <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>
+                {{ link.title }}
+              </a>
+            </li>
+          {%- endif -%}
         {%- else -%}
           <li><a href="/collections">Collections</a></li>
           <li><a href="/collections/all">Catalogue</a></li>
@@ -127,11 +145,33 @@
     <nav aria-label="Navigation mobile">
       <ul class="km-nav-drawer__links">
         {%- for link in linklists[section.settings.menu_left].links -%}
-          <li>
-            <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>
-              {{ link.title }}
-            </a>
-          </li>
+          {%- if link.links != blank -%}
+            <li class="km-nav-drawer__has-dropdown">
+              <div class="km-nav-drawer__dropdown-trigger-wrap" style="display: flex; justify-content: space-between; align-items: center;">
+                <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>
+                  {{ link.title }}
+                </a>
+                <button type="button" class="km-nav-drawer__dropdown-toggle" aria-expanded="false" onclick="this.closest('li').classList.toggle('is-open'); this.setAttribute('aria-expanded', this.closest('li').classList.contains('is-open'))" style="background: none; border: none; color: inherit; padding: 8px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 0.3s;"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+              </div>
+              <ul class="km-nav-drawer__dropdown">
+                {%- for childlink in link.links -%}
+                  <li>
+                    <a href="{{ childlink.url }}" {% if childlink.active %}aria-current="page"{% endif %}>
+                      {{ childlink.title }}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </li>
+          {%- else -%}
+            <li>
+              <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>
+                {{ link.title }}
+              </a>
+            </li>
+          {%- endif -%}
         {%- else -%}
           <li><a href="/collections">Collections</a></li>
           <li><a href="/collections/all">Catalogue</a></li>
