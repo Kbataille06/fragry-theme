@@ -57,4 +57,30 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // Back to top button
+  const backToTopBtn = document.getElementById('km-back-to-top');
+  if (backToTopBtn) {
+    let tickingBtt = false;
+    window.addEventListener('scroll', () => {
+      if (!tickingBtt) {
+        window.requestAnimationFrame(() => {
+          if (window.scrollY > 300) {
+            backToTopBtn.classList.add('is-visible');
+          } else {
+            backToTopBtn.classList.remove('is-visible');
+          }
+          tickingBtt = false;
+        });
+        tickingBtt = true;
+      }
+    }, { passive: true });
+
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  }
 });

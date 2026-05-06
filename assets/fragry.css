@@ -2607,3 +2607,49 @@ details[open] .km-accordion__icon {
 .km-rte p:last-child {
   margin-bottom: 0;
 }
+
+/* ============================================================
+   BACK TO TOP BUTTON
+   ============================================================ */
+.km-back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 50px;
+  height: 50px;
+  background-color: var(--c-accent-gold);
+  color: var(--c-bg-dark);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.km-back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.km-back-to-top:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.5);
+  background-color: #f1c40f; /* Slightly lighter gold on hover */
+}
+
+@media (max-width: 768px) {
+  .km-back-to-top {
+    bottom: 16px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+  }
+}
