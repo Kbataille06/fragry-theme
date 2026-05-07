@@ -328,6 +328,14 @@ img {
   animation: fadeUp 1s var(--ease-out-expo) forwards 0.4s;
 }
 
+@media (max-width: 767px) {
+  .hero__title {
+    font-size: clamp(2rem, 10vw, 2.8rem);
+    line-height: 1.1;
+    text-align: center !important;
+  }
+}
+
 .hero__title em {
   font-style: normal;
   color: var(--c-accent-gold);
@@ -355,6 +363,27 @@ img {
   opacity: 0;
   transform: translateY(20px);
   animation: fadeUp 1s var(--ease-out-expo) forwards 0.6s;
+}
+
+@media (max-width: 767px) {
+  .hero__text {
+    color: #FFFFFF;
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  
+  .hero__content {
+    text-align: center !important;
+  }
+
+  .hero__eyebrow {
+    text-align: center !important;
+  }
+
+  .hero__cta {
+    text-align: center !important;
+  }
 }
 
 .hero__cta {
