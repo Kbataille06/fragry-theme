@@ -12,7 +12,8 @@
     "hero": {
       "type": "custom-hero",
       "settings": {
-        "bg_image": "shopify://shop_images/banner_without.jpg",
+        "bg_image": "shopify://shop_images/accDesktop.jpg",
+        "bg_image_mobile": "shopify://shop_images/accMobile.jpg",
         "text_alignment": "left",
         "eyebrow": "MAISON DE PARFUMERIE",
         "heading_before": "L'Art du",
