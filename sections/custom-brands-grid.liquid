@@ -1,0 +1,133 @@
+{%- style -%}
+  #km-brands-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<div class="km-band km-band--{{ section.settings.color_scheme }}">
+  <div class="km-section" id="km-brands-{{ section.id }}">
+    
+    {%- if section.settings.title != blank or section.settings.eyebrow != blank -%}
+      <div class="km-section__header">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="km-section__eyebrow">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        {%- if section.settings.title != blank -%}
+          <h2 class="km-section__title">{{ section.settings.title }}</h2>
+        {%- endif -%}
+        <div class="km-section__divider"></div>
+      </div>
+    {%- endif -%}
+
+    <div class="km-categories-grid">
+      {%- comment -%}
+        We iterate through the 'marque' metaobject. 
+        Adjust the handle 'marque' if your metaobject uses a different one.
+      {%- endcomment -%}
+      {%- for brand in shop.metaobjects.marque.values -%}
+        {%- liquid
+          # Adjust field handles if necessary (e.g., brand.name, brand.logo)
+          assign brand_name = brand.nom.value | default: brand.name.value | default: brand.system.handle | capitalize
+          assign brand_logo = brand.logo.value | default: brand.image.value
+          
+          # Construct filter URL. 
+          # This assumes you have a product metafield 'custom.maison_de_parfum' enabled as a filter.
+          assign filter_param = section.settings.filter_key | default: 'filter.p.m.custom.maison_de_parfum'
+          assign filter_url = "/collections/all?" | append: filter_param | append: "=" | append: brand_name | url_encode
+        -%}
+        
+        <a href="{{ filter_url }}" 
+           class="km-category-card km-category-card--33"
+           style="--card-aspect: 1/1; --overlay-opacity: 0.3;">
+           
+          <div class="km-category-card__image-wrap">
+            {%- if brand_logo != blank -%}
+              {{ brand_logo | image_url: width: 800 | image_tag: 
+                loading: 'lazy', 
+                class: 'km-category-card__image',
+                widths: '400, 600, 800'
+              }}
+            {%- else -%}
+              <div class="km-category-card__placeholder">
+                <span>{{ brand_name | slice: 0 | upcase }}</span>
+              </div>
+            {%- endif -%}
+            
+            <div class="km-category-card__overlay"></div>
+            
+            <div class="km-category-card__content">
+              <h3 class="km-category-card__title">{{ brand_name }}</h3>
+            </div>
+          </div>
+        </a>
+      {%- else -%}
+        <p style="grid-column: 1 / -1; text-align: center; opacity: 0.5; padding: 40px;">
+          Aucune marque trouvée. Assurez-vous d'avoir créé des entrées dans le métaobjet "Marque".
+        </p>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Liste des Marques",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sourcil",
+      "default": "MAISONS DE PARFUM"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Nos Marques"
+    },
+    {
+      "type": "text",
+      "id": "filter_key",
+      "label": "Clé du filtre URL",
+      "info": "Ex: filter.p.m.custom.maison_de_parfum",
+      "default": "filter.p.m.custom.maison_de_parfum"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Couleurs de la bande",
+      "options": [
+        { "value": "light", "label": "Ivoire (Clair)" },
+        { "value": "dark", "label": "Noir (Sombre)" }
+      ],
+      "default": "light"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding haut",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bas",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Liste des Marques"
+    }
+  ]
+}
+{% endschema %}
