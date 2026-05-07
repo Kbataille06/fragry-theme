@@ -14,6 +14,20 @@
 <div id="km-header-root-{{ section.id }}">
 
   <header class="km-header" id="km-main-header" role="banner">
+    {%- comment -%} Mobile Menu Trigger (Left) {%- endcomment -%}
+    <button
+      type="button"
+      class="km-header__icon-btn km-header__hamburger"
+      id="km-menu-open-btn"
+      aria-label="Ouvrir le menu"
+      aria-expanded="false"
+      aria-controls="km-nav-drawer"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+
     {%- comment -%} Left nav {%- endcomment -%}
     <nav aria-label="Navigation principale">
       <ul class="km-header__nav km-header__nav--left">
@@ -94,18 +108,6 @@
       </button>
 
 
-      <button
-        type="button"
-        class="km-header__icon-btn km-header__hamburger"
-        id="km-menu-open-btn"
-        aria-label="Ouvrir le menu"
-        aria-expanded="false"
-        aria-controls="km-nav-drawer"
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false">
-          <path d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-      </button>
     </div>
   </header>
 
