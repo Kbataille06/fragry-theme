@@ -115,7 +115,7 @@
           "settings": {
             "title": "Maisons de parfumerie",
             "subtitle": "",
-            "link": "shopify://collections/brumes",
+            "link": "shopify://pages/nos-maisons-de-parfum",
             "width": "33",
             "aspect_ratio": "1/1",
             "focal_point_x": 50,
