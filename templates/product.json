@@ -12,7 +12,7 @@
     "main": {
       "type": "custom-product",
       "settings": {
-        "color_scheme": "dark",
+        "color_scheme": "light",
         "shipping_text": "<p>Expédition sous 24h. Livraison gratuite à partir de 100€ d'achat.</p>",
         "usage_text": "<p>Vaporisez sur les points de pulsation (poignets, cou, derrière les oreilles) à une distance de 20cm.</p>"
       }
