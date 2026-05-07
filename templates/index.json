@@ -35,43 +35,62 @@
         "cta_url": ""
       }
     },
-    "custom_best_sellers_e97ReD": {
-      "type": "custom-best-sellers",
-      "name": "Best Sellers",
+    "custom_categories_JBMqzF": {
+      "type": "custom-categories",
+      "blocks": {
+        "rubrique_NcdqiD": {
+          "type": "rubrique",
+          "settings": {
+            "image": "shopify://shop_images/produitsfemme.jpg",
+            "title": "Pour elle",
+            "subtitle": "",
+            "link": "",
+            "width": "50",
+            "aspect_ratio": "1/1",
+            "focal_point_x": 50,
+            "focal_point_y": 50,
+            "overlay_opacity": 30
+          }
+        },
+        "rubrique_edpr7L": {
+          "type": "rubrique",
+          "settings": {
+            "image": "shopify://shop_images/produitshomme.jpg",
+            "title": "Pour lui",
+            "subtitle": "",
+            "link": "",
+            "width": "50",
+            "aspect_ratio": "1/1",
+            "focal_point_x": 50,
+            "focal_point_y": 50,
+            "overlay_opacity": 30
+          }
+        }
+      },
+      "block_order": [
+        "rubrique_NcdqiD",
+        "rubrique_edpr7L"
+      ],
+      "name": "Rubriques",
       "settings": {
+        "eyebrow": "Explorer",
+        "title": "Nos Univers",
         "color_scheme": "dark",
-        "eyebrow": "",
-        "title": "Pour Elle",
-        "collection": "femme",
-        "products_count": 4,
-        "cta_label": "Voir tous les parfums Femme",
-        "cta_url": "shopify://collections/femme"
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     },
-    "custom_best_sellers_BCLAzd": {
+    "custom_best_sellers_iJr7w9": {
       "type": "custom-best-sellers",
       "name": "Best Sellers",
       "settings": {
         "color_scheme": "light",
-        "eyebrow": "",
-        "title": "Pour Lui",
-        "collection": "homme",
+        "eyebrow": "Inspirations",
+        "title": "Notre sélection",
+        "collection": "notre-selection",
         "products_count": 4,
-        "cta_label": "Voir tous les parfums Homme",
-        "cta_url": "shopify://collections/homme"
-      }
-    },
-    "custom_best_sellers_we86D6": {
-      "type": "custom-best-sellers",
-      "name": "Best Sellers",
-      "settings": {
-        "color_scheme": "dark",
-        "eyebrow": "",
-        "title": "Nos coffrets",
-        "collection": "homme",
-        "products_count": 4,
-        "cta_label": "Voir tous les coffrets et packs",
-        "cta_url": "shopify://collections/coffrets"
+        "cta_label": "Voir tous les produits",
+        "cta_url": "shopify://collections/notre-selection"
       }
     },
     "1777970573218aaab4": {
@@ -100,9 +119,8 @@
   "order": [
     "hero",
     "best_sellers",
-    "custom_best_sellers_e97ReD",
-    "custom_best_sellers_BCLAzd",
-    "custom_best_sellers_we86D6",
+    "custom_categories_JBMqzF",
+    "custom_best_sellers_iJr7w9",
     "1777970573218aaab4"
   ]
 }

@@ -2623,6 +2623,107 @@ details[open] .km-accordion__icon {
   margin-bottom: 0;
 }
 
+/* ── RUBRIQUES (CATEGORIES) SECTION ── */
+.km-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+
+@media (min-width: 768px) {
+  .km-categories-grid {
+    grid-template-columns: repeat(12, 1fr);
+  }
+}
+
+.km-category-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  text-decoration: none;
+  background: var(--c-surface);
+  grid-column: span 1; /* Mobile default (2 per row) */
+}
+
+/* Width variations on Desktop */
+@media (min-width: 768px) {
+  .km-category-card--25 { grid-column: span 3; }
+  .km-category-card--33 { grid-column: span 4; }
+  .km-category-card--50 { grid-column: span 6; }
+  .km-category-card--100 { grid-column: span 12; }
+}
+
+/* 100% width on mobile spans both columns */
+@media (max-width: 767px) {
+  .km-category-card--100 { grid-column: span 2; }
+}
+
+.km-category-card__image-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: var(--card-aspect, 1/1);
+  overflow: hidden;
+}
+
+.km-category-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--img-pos, center);
+  transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.km-category-card:hover .km-category-card__image {
+  transform: scale(1.08);
+}
+
+.km-category-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: black;
+  opacity: var(--overlay-opacity, 0.3);
+  transition: opacity 0.4s ease;
+  z-index: 1;
+}
+
+.km-category-card:hover .km-category-card__overlay {
+  opacity: calc(var(--overlay-opacity, 0.3) + 0.15);
+}
+
+.km-category-card__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-md);
+  text-align: center;
+  z-index: 2;
+  color: white;
+}
+
+.km-category-card__title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: white !important;
+}
+
+.km-category-card__subtitle {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  opacity: 0.9;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: white !important;
+}
+
 /* ============================================================
    BACK TO TOP BUTTON
    ============================================================ */
@@ -2668,3 +2769,4 @@ details[open] .km-accordion__icon {
     height: 44px;
   }
 }
+
