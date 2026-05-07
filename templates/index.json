@@ -41,6 +41,7 @@
         "rubrique_NcdqiD": {
           "type": "rubrique",
           "settings": {
+            "image": "shopify://shop_images/produitsfemme.jpg",
             "title": "Pour elle",
             "subtitle": "",
             "link": "",
@@ -54,6 +55,7 @@
         "rubrique_edpr7L": {
           "type": "rubrique",
           "settings": {
+            "image": "shopify://shop_images/produitshomme.jpg",
             "title": "Pour lui",
             "subtitle": "",
             "link": "",
