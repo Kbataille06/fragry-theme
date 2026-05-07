@@ -94,6 +94,77 @@
         "cta_url": "shopify://collections/notre-selection"
       }
     },
+    "custom_categories_x3e7Xi": {
+      "type": "custom-categories",
+      "blocks": {
+        "rubrique_ehrr8h": {
+          "type": "rubrique",
+          "settings": {
+            "title": "Parfums",
+            "subtitle": "",
+            "link": "shopify://collections/parfums",
+            "width": "25",
+            "aspect_ratio": "1/1",
+            "focal_point_x": 50,
+            "focal_point_y": 50,
+            "overlay_opacity": 30
+          }
+        },
+        "rubrique_RgB8Um": {
+          "type": "rubrique",
+          "settings": {
+            "title": "Brumes",
+            "subtitle": "",
+            "link": "shopify://collections/brumes",
+            "width": "25",
+            "aspect_ratio": "1/1",
+            "focal_point_x": 50,
+            "focal_point_y": 50,
+            "overlay_opacity": 30
+          }
+        },
+        "rubrique_daCMtm": {
+          "type": "rubrique",
+          "settings": {
+            "title": "Huiles de parfum",
+            "subtitle": "",
+            "link": "shopify://collections/huiles-de-parfums",
+            "width": "25",
+            "aspect_ratio": "1/1",
+            "focal_point_x": 50,
+            "focal_point_y": 50,
+            "overlay_opacity": 30
+          }
+        },
+        "rubrique_bjF9Nb": {
+          "type": "rubrique",
+          "settings": {
+            "title": "Musc",
+            "subtitle": "",
+            "link": "shopify://collections/musc",
+            "width": "25",
+            "aspect_ratio": "1/1",
+            "focal_point_x": 50,
+            "focal_point_y": 50,
+            "overlay_opacity": 30
+          }
+        }
+      },
+      "block_order": [
+        "rubrique_ehrr8h",
+        "rubrique_RgB8Um",
+        "rubrique_daCMtm",
+        "rubrique_bjF9Nb"
+      ],
+      "name": "Rubriques",
+      "settings": {
+        "eyebrow": "Explorer",
+        "title": "Nos Univers",
+        "color_scheme": "dark",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
     "1777970573218aaab4": {
       "type": "apps",
       "blocks": {
@@ -122,6 +193,7 @@
     "best_sellers",
     "custom_categories_JBMqzF",
     "custom_best_sellers_iJr7w9",
+    "custom_categories_x3e7Xi",
     "1777970573218aaab4"
   ]
 }
