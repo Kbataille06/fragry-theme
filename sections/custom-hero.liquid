@@ -4,13 +4,31 @@
 {% endcomment %}
 
 <section class="hero" id="hero-{{ section.id }}">
-  {%- if section.settings.bg_video != blank -%}
+  {%- if section.settings.bg_video != blank or section.settings.bg_video_mobile != blank -%}
     <div class="hero__bg">
-      {{ section.settings.bg_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: "2400x" }}
+      {%- if section.settings.bg_video != blank -%}
+        <div class="hero__video-desktop {% if section.settings.bg_video_mobile != blank %}hide-mobile{% endif %}">
+           {{ section.settings.bg_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: "2400x" }}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.bg_video_mobile != blank -%}
+        <div class="hero__video-mobile {% if section.settings.bg_video != blank %}hide-desktop{% endif %}">
+           {{ section.settings.bg_video_mobile | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: "800x" }}
+        </div>
+      {%- endif -%}
     </div>
-  {%- elsif section.settings.bg_image != blank -%}
+  {%- elsif section.settings.bg_image != blank or section.settings.bg_image_mobile != blank -%}
     <div class="hero__bg">
-      <img src="{{ section.settings.bg_image | image_url: width: 2400 }}" alt="" loading="eager">
+      <picture>
+        {%- if section.settings.bg_image_mobile != blank -%}
+          <source media="(max-width: 767px)" srcset="{{ section.settings.bg_image_mobile | image_url: width: 800 }}">
+        {%- endif -%}
+        {%- if section.settings.bg_image != blank -%}
+          <img src="{{ section.settings.bg_image | image_url: width: 2400 }}" alt="{{ section.settings.bg_image.alt | escape }}" loading="eager">
+        {%- else -%}
+          <img src="{{ section.settings.bg_image_mobile | image_url: width: 800 }}" alt="{{ section.settings.bg_image_mobile.alt | escape }}" loading="eager">
+        {%- endif -%}
+      </picture>
     </div>
   {%- endif -%}
   
@@ -70,13 +88,24 @@
     {
       "type": "video",
       "id": "bg_video",
-      "label": "Background Video",
+      "label": "Background Video (Desktop)",
       "info": "Overrides the background image if selected."
+    },
+    {
+      "type": "video",
+      "id": "bg_video_mobile",
+      "label": "Background Video (Mobile)",
+      "info": "Specific video for mobile devices."
     },
     {
       "type": "image_picker",
       "id": "bg_image",
-      "label": "Background Image"
+      "label": "Background Image (Desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image_mobile",
+      "label": "Background Image (Mobile)"
     },
     {
       "type": "select",

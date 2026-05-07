@@ -13,15 +13,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 100);
 
     // Parallax effect for hero background
-    const heroBgMedia = document.querySelector('.hero__bg img, .hero__bg video');
-    if (heroBgMedia) {
+    const heroBgMedias = document.querySelectorAll('.hero__bg img, .hero__bg video');
+    if (heroBgMedias.length > 0) {
       let ticking = false;
       window.addEventListener('scroll', () => {
         if (!ticking) {
           window.requestAnimationFrame(() => {
             const scrolled = window.scrollY;
             if (scrolled <= hero.offsetHeight) {
-              heroBgMedia.style.transform = `translateY(calc(-10% + ${scrolled * 0.4}px))`;
+              heroBgMedias.forEach(media => {
+                media.style.transform = `translateY(calc(-10% + ${scrolled * 0.4}px))`;
+              });
             }
             ticking = false;
           });
