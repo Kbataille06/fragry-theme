@@ -1,0 +1,212 @@
+{%- style -%}
+  #km-categories-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<div class="km-band km-band--{{ section.settings.color_scheme }}">
+  <div class="km-section" id="km-categories-{{ section.id }}">
+    
+    {%- if section.settings.title != blank or section.settings.eyebrow != blank -%}
+      <div class="km-section__header">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="km-section__eyebrow">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        {%- if section.settings.title != blank -%}
+          <h2 class="km-section__title">{{ section.settings.title }}</h2>
+        {%- endif -%}
+        <div class="km-section__divider"></div>
+      </div>
+    {%- endif -%}
+
+    <div class="km-categories-grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign aspect_ratio = block.settings.aspect_ratio
+          if aspect_ratio == 'auto'
+            assign aspect_ratio = '1/1'
+          endif
+          
+          assign focal_point = block.settings.focal_point_x | append: '% ' | append: block.settings.focal_point_y | append: '%'
+        -%}
+        
+        <a href="{{ block.settings.link | default: '#' }}" 
+           class="km-category-card km-category-card--{{ block.settings.width }}"
+           style="--card-aspect: {{ aspect_ratio }}; --img-pos: {{ focal_point }}; --overlay-opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"
+           {{ block.shopify_attributes }}>
+           
+          <div class="km-category-card__image-wrap">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 1200 | image_tag: 
+                loading: 'lazy', 
+                class: 'km-category-card__image',
+                widths: '400, 600, 800, 1000, 1200'
+              }}
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'km-category-card__image' }}
+            {%- endif -%}
+            
+            <div class="km-category-card__overlay"></div>
+            
+            <div class="km-category-card__content">
+              {%- if block.settings.title != blank -%}
+                <h3 class="km-category-card__title">{{ block.settings.title }}</h3>
+              {%- endif -%}
+              {%- if block.settings.subtitle != blank -%}
+                <p class="km-category-card__subtitle">{{ block.settings.subtitle }}</p>
+              {%- endif -%}
+            </div>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Rubriques",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sourcil",
+      "default": "Explorer"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Nos Univers"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Couleurs de la bande",
+      "options": [
+        { "value": "light", "label": "Ivoire (Clair)" },
+        { "value": "dark", "label": "Noir (Sombre)" }
+      ],
+      "default": "dark"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding haut",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bas",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "rubrique",
+      "name": "Rubrique",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Sous-titre"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Lien"
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Largeur (Desktop)",
+          "options": [
+            { "value": "25", "label": "25% (4 par ligne)" },
+            { "value": "33", "label": "33% (3 par ligne)" },
+            { "value": "50", "label": "50% (2 par ligne)" },
+            { "value": "100", "label": "100% (Pleine largeur)" }
+          ],
+          "default": "50"
+        },
+        {
+          "type": "select",
+          "id": "aspect_ratio",
+          "label": "Format de la case",
+          "options": [
+            { "value": "1/1", "label": "Carré" },
+            { "value": "16/9", "label": "Paysage (16:9)" },
+            { "value": "4/5", "label": "Portrait (4:5)" },
+            { "value": "21/9", "label": "Cinématique (21:9)" },
+            { "value": "3/1", "label": "Bandeau fin (3:1)" }
+          ],
+          "default": "1/1"
+        },
+        {
+          "type": "header",
+          "content": "Ajustement de l'image"
+        },
+        {
+          "type": "range",
+          "id": "focal_point_x",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Position Horizontale",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "focal_point_y",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Position Verticale",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "min": 0,
+          "max": 90,
+          "step": 5,
+          "unit": "%",
+          "label": "Opacité du calque sombre",
+          "default": 30
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rubriques",
+      "blocks": [
+        { "type": "rubrique", "settings": { "width": "50", "title": "Hommes" } },
+        { "type": "rubrique", "settings": { "width": "50", "title": "Femmes" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
