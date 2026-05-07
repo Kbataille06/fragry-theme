@@ -484,6 +484,50 @@ img {
   transition: color 0.3s;
 }
 
+.km-header__has-dropdown {
+  position: relative;
+}
+
+.km-header__dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  background: var(--c-bg-dark);
+  border: 1px solid var(--c-border);
+  padding: var(--space-sm) 0;
+  list-style: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  z-index: 60;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.km-header__has-dropdown:hover .km-header__dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.km-header__dropdown li {
+  margin: 0;
+}
+
+.km-header__dropdown a {
+  display: block;
+  padding: 8px 16px;
+  text-transform: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+.km-header__dropdown a:hover {
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--c-accent-gold);
+}
+
 .km-header__logo {
   position: absolute;
   left: 50%;
@@ -597,6 +641,43 @@ img {
   border: none;
   color: var(--c-text-light);
   cursor: pointer;
+}
+
+.km-nav-drawer__has-dropdown {
+  display: flex;
+  flex-direction: column;
+}
+
+.km-nav-drawer__dropdown {
+  list-style: none;
+  padding-left: var(--space-md);
+  margin-top: 0;
+  margin-bottom: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, margin-top 0.4s ease;
+}
+
+.km-nav-drawer__has-dropdown.is-open .km-nav-drawer__dropdown {
+  max-height: 500px; /* arbitrary max-height for transition */
+  margin-top: var(--space-sm);
+}
+
+.km-nav-drawer__has-dropdown.is-open .km-nav-drawer__dropdown-toggle svg {
+  transform: rotate(180deg);
+}
+
+.km-nav-drawer__dropdown li {
+  margin-bottom: var(--space-xs);
+}
+
+.km-nav-drawer__dropdown a {
+  font-size: 0.9rem;
+  color: var(--c-text-muted);
+}
+
+.km-nav-drawer__dropdown a:hover {
+  color: var(--c-accent-gold);
 }
 
 /* FOOTER STYLES */
@@ -874,8 +955,21 @@ img {
 
 .km-products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-md);
+}
+
+@media (max-width: 1200px) {
+  .km-products-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .km-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-xs);
+  }
 }
 
 .km-product-card {
@@ -1020,6 +1114,12 @@ img {
   transition: color 0.3s;
 }
 
+@media (max-width: 768px) {
+  .km-product-card__title {
+    font-size: 0.9rem;
+  }
+}
+
 .km-product-card:hover .km-product-card__title {
   color: var(--c-accent-gold);
 }
@@ -1082,6 +1182,15 @@ img {
 /* Label texte — visible sur desktop */
 .km-product-card__add-btn-label {
   display: inline;
+}
+
+@media (max-width: 768px) {
+  .km-product-card__add-btn-label {
+    display: none;
+  }
+  .km-product-card__add-btn {
+    padding: 8px;
+  }
 }
 
 /* Icône — toujours visible */
@@ -1880,9 +1989,6 @@ img {
 @media (max-width: 768px) {
   .km-col-grid { grid-template-columns: repeat(2, 1fr); gap: 1px; }
 }
-@media (max-width: 400px) {
-  .km-col-grid { grid-template-columns: 1fr; }
-}
 
 /* ── Card ── */
 .km-col-card {
@@ -2601,5 +2707,51 @@ details[open] .km-accordion__icon {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: white !important;
+}
+
+/* ============================================================
+   BACK TO TOP BUTTON
+   ============================================================ */
+.km-back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 50px;
+  height: 50px;
+  background-color: var(--c-accent-gold);
+  color: var(--c-bg-dark);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.km-back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.km-back-to-top:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.5);
+  background-color: #f1c40f; /* Slightly lighter gold on hover */
+}
+
+@media (max-width: 768px) {
+  .km-back-to-top {
+    bottom: 16px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+  }
 }
 

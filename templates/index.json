@@ -43,7 +43,7 @@
         "eyebrow": "",
         "title": "Pour Elle",
         "collection": "femme",
-        "products_count": 8,
+        "products_count": 4,
         "cta_label": "Voir tous les parfums Femme",
         "cta_url": "shopify://collections/femme"
       }
@@ -56,7 +56,7 @@
         "eyebrow": "",
         "title": "Pour Lui",
         "collection": "homme",
-        "products_count": 8,
+        "products_count": 4,
         "cta_label": "Voir tous les parfums Homme",
         "cta_url": "shopify://collections/homme"
       }
