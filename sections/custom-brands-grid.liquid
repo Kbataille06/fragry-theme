@@ -34,10 +34,11 @@
           # Construct filter URL. 
           # This assumes you have a product metafield 'custom.maison_de_parfum' enabled as a filter.
           assign filter_param = section.settings.filter_key | default: 'filter.p.m.custom.maison_de_parfum'
-          assign filter_url = brand_name | url_encode | prepend: "=" | prepend: filter_param | prepend: "/collections/all?"
+          # Dynamic URL for the brand page
+          assign brand_url = brand.system.url | default: filter_url
         -%}
         
-        <a href="{{ filter_url }}" 
+        <a href="{{ brand_url }}" 
            class="km-category-card km-category-card--33"
            style="--card-aspect: 1/1; --overlay-opacity: 0.3;">
            
