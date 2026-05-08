@@ -34,7 +34,7 @@
           # Construct filter URL. 
           # This assumes you have a product metafield 'custom.maison_de_parfum' enabled as a filter.
           assign filter_param = section.settings.filter_key | default: 'filter.p.m.custom.maison_de_parfum'
-          assign filter_url = "/collections/all?" | append: filter_param | append: "=" | append: brand_name | url_encode
+          assign filter_url = brand_name | url_encode | prepend: "=" | prepend: filter_param | prepend: "/collections/all?"
         -%}
         
         <a href="{{ filter_url }}" 

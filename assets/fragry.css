@@ -2751,11 +2751,12 @@ details[open] .km-accordion__icon {
   height: 100%;
   object-fit: cover;
   object-position: var(--img-pos, center);
-  transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
 }
 
 .km-category-card:hover .km-category-card__image {
-  transform: scale(1.08);
+  transform: scale(1.12);
 }
 
 .km-category-card__placeholder {
@@ -2770,6 +2771,12 @@ details[open] .km-accordion__icon {
   font-family: var(--font-heading);
   font-size: 3rem;
   text-transform: uppercase;
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+
+.km-category-card:hover .km-category-card__placeholder {
+  transform: scale(1.12);
 }
 
 .km-category-card__overlay {
@@ -2777,12 +2784,12 @@ details[open] .km-accordion__icon {
   inset: 0;
   background: black;
   opacity: var(--overlay-opacity, 0.3);
-  transition: opacity 0.4s ease;
+  transition: opacity 0.6s ease;
   z-index: 1;
 }
 
 .km-category-card:hover .km-category-card__overlay {
-  opacity: calc(var(--overlay-opacity, 0.3) + 0.15);
+  opacity: calc(var(--overlay-opacity, 0.3) + 0.2);
 }
 
 .km-category-card__content {
