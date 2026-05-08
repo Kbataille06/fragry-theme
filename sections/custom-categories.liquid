@@ -3,6 +3,12 @@
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
   }
+  .km-categories-footer {
+    margin-top: 40px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
 {%- endstyle -%}
 
 <div class="km-band km-band--{{ section.settings.color_scheme }}">
@@ -61,6 +67,14 @@
         </a>
       {%- endfor -%}
     </div>
+
+    {%- if section.settings.button_label != blank -%}
+      <div class="km-categories-footer">
+        <a href="{{ section.settings.button_link | default: '#' }}" class="btn">
+          {{ section.settings.button_label }}
+        </a>
+      </div>
+    {%- endif -%}
   </div>
 </div>
 
@@ -109,6 +123,20 @@
       "unit": "px",
       "label": "Padding bas",
       "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Bouton"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Libellé du bouton"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Lien du bouton"
     }
   ],
   "blocks": [
