@@ -1,0 +1,155 @@
+{%- liquid
+  # Fields are based on common patterns and the user's existing brand grid section
+  assign brand_name = metaobject.nom.value | default: metaobject.name.value | default: metaobject.system.handle | capitalize
+  assign brand_description = metaobject.description.value | default: metaobject.description_courte.value
+  assign brand_logo = metaobject.logo.value | default: metaobject.image.value
+-%}
+
+<div class="km-brand-template">
+  <!-- Brand Hero -->
+  <section class="km-col-hero">
+    <div class="km-col-hero__bg"></div>
+    <div class="km-col-hero__content">
+      {%- if brand_logo != blank -%}
+        <div class="km-brand-logo-wrap km-fade-up">
+           {{ brand_logo | image_url: width: 400 | image_tag: class: 'km-brand-logo-img', loading: 'lazy' }}
+        </div>
+      {%- endif -%}
+      <h1 class="km-col-hero__title">Maison <em>{{ brand_name }}</em></h1>
+      {%- if brand_description != blank -%}
+        <div class="km-brand-description km-fade-up">{{ brand_description | newline_to_br }}</div>
+      {%- endif -%}
+      <div class="km-col-hero__divider">
+        <span class="km-col-hero__line"></span>
+        <span class="km-col-hero__diamond"></span>
+        <span class="km-col-hero__line km-col-hero__line--r"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <div class="km-band km-band--light">
+    <div class="km-col-section">
+      
+      <div class="km-col-toolbar">
+         <p class="km-col-toolbar__count">Les parfums de la Maison <span>{{ brand_name }}</span></p>
+      </div>
+
+      <ul class="km-col-grid" role="list">
+        {%- assign count = 0 -%}
+        {%- comment -%}
+          We loop through all products. For larger catalogs, this might need optimization (like using search or collections).
+          We check if the product's maison_de_parfum metafield references this metaobject.
+        {%- endcomment -%}
+        {%- for product in collections.all.products -%}
+           {%- liquid
+             assign matches = false
+             # Try metafield reference match
+             if product.metafields.custom.maison_de_parfum.value.system.handle == metaobject.system.handle
+                assign matches = true
+             # Fallback to vendor name match
+             elsif product.vendor == brand_name
+                assign matches = true
+             endif
+           -%}
+           {%- if matches -%}
+              {%- assign count = count | plus: 1 -%}
+              {%- render 'product-card', product: product, index: count -%}
+           {%- endif -%}
+        {%- endfor -%}
+        
+        {%- if count == 0 -%}
+          <div class="km-col-empty">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <p>Aucun produit trouvé pour cette maison.</p>
+            <a href="/collections/all" class="km-btn">Explorer tout le catalogue</a>
+          </div>
+        {%- endif -%}
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+<style>
+.km-brand-logo-wrap {
+  margin: 0 auto 2rem;
+  max-width: 220px;
+}
+.km-brand-logo-img {
+  width: 100%;
+  height: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.95;
+  object-fit: contain;
+}
+.km-brand-description {
+  max-width: 800px;
+  margin: 1.5rem auto 0;
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgba(245,240,234, 0.75);
+  text-align: center;
+}
+.km-brand-template .km-col-hero {
+  padding-bottom: 6rem;
+}
+.km-brand-template .km-col-toolbar {
+  justify-content: center;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  margin-bottom: 3rem;
+}
+.km-brand-template .km-col-toolbar__count {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 1rem;
+}
+.km-brand-template .km-col-toolbar__count span {
+  color: var(--c-accent-gold);
+  font-weight: 700;
+}
+</style>
+
+<script>
+(function () {
+  // Intersection Observer for fade-up animations
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('km-fade-up--visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.km-fade-up').forEach(function (el) {
+    observer.observe(el);
+  });
+
+  // AJAX Add to cart listener
+  document.querySelectorAll('[data-add-to-cart]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var card = btn.closest('[data-variant-id]');
+      if (!card || btn.disabled) return;
+      var variantId = Number(card.dataset.variantId);
+      if (typeof window.fragryAddToCart === 'function') {
+        window.fragryAddToCart(variantId, btn);
+      }
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Détails de la Marque",
+  "settings": []
+}
+{% endschema %}
