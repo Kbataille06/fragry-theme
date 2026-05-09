@@ -1,0 +1,90 @@
+{%- comment -%}
+  FRAGRY — Breadcrumb & Intelligent Back Button
+  Logic:
+  - Product: Home > Collection > Product. Back to Collection/Catalogue.
+  - Collection: Home > Collection. Back to Home.
+  - Brand (Metaobject): Home > Marques > Brand. Back to "Liste des Parfums" (Collection Parfums).
+{%- endcomment -%}
+
+<nav class="km-breadcrumb-nav" aria-label="Fil d'ariane">
+  <div class="km-breadcrumb-container">
+    {%- liquid
+      assign back_url = 'javascript:history.back()'
+      assign back_label = 'Retour'
+      
+      if template contains 'product'
+        if collection
+          assign back_url = collection.url
+          assign back_label = collection.title
+        else
+          assign back_url = '/collections/all'
+          assign back_label = 'Catalogue'
+        endif
+      elsif template contains 'collection'
+        assign back_url = '/'
+        assign back_label = 'Accueil'
+      elsif template contains 'metaobject'
+        # The user specifically wants brand pages to go back to "Liste des parfums"
+        # We assume '/collections/parfums' is the intended destination
+        assign back_url = '/collections/parfums'
+        assign back_label = 'Liste des parfums'
+      elsif template == 'page'
+        assign back_url = '/'
+        assign back_label = 'Accueil'
+      endif
+    -%}
+
+    <a href="{{ back_url }}" class="km-breadcrumb-back" title="Revenir à {{ back_label }}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>{{ back_label }}</span>
+    </a>
+
+    <div class="km-breadcrumb-divider"></div>
+
+    <ol class="km-breadcrumb-list">
+      <li class="km-breadcrumb-item">
+        <a href="/">Accueil</a>
+      </li>
+      
+      {%- if template contains 'product' -%}
+        <li class="km-breadcrumb-item">
+          <svg class="km-breadcrumb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          {%- if collection -%}
+            <a href="{{ collection.url }}">{{ collection.title }}</a>
+          {%- else -%}
+            <a href="/collections/all">Catalogue</a>
+          {%- endif -%}
+        </li>
+        <li class="km-breadcrumb-item">
+          <svg class="km-breadcrumb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <span aria-current="page">{{ product.title }}</span>
+        </li>
+      
+      {%- elsif template contains 'collection' -%}
+        <li class="km-breadcrumb-item">
+          <svg class="km-breadcrumb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <span aria-current="page">{{ collection.title }}</span>
+        </li>
+
+      {%- elsif template contains 'metaobject' -%}
+        <li class="km-breadcrumb-item">
+          <svg class="km-breadcrumb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <a href="/pages/nos-maisons-de-parfum">Marques</a>
+        </li>
+        <li class="km-breadcrumb-item">
+          <svg class="km-breadcrumb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <span aria-current="page">{{ metaobject.nom.value | default: metaobject.name.value | default: 'Marque' }}</span>
+        </li>
+
+      {%- elsif template == 'page' -%}
+        <li class="km-breadcrumb-item">
+          <svg class="km-breadcrumb-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <span aria-current="page">{{ page.title }}</span>
+        </li>
+      {%- endif -%}
+    </ol>
+  </div>
+</nav>

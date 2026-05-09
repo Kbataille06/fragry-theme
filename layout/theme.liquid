@@ -23,6 +23,9 @@
   <body>
 
     {% sections 'header-group' %}
+    {%- if template != 'index' -%}
+      {% render 'breadcrumb' %}
+    {%- endif -%}
 
     <main id="main-content" tabindex="-1">
       {{ content_for_layout }}
