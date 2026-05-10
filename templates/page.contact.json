@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "contact-main",
+      "settings": {
+        "title": "Contactez-nous",
+        "subtitle": "Une question ? Une demande particulière ? Nos conseillers sont à votre entière disposition."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
