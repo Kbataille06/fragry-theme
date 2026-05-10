@@ -1,0 +1,26 @@
+{
+  "404": {
+    "title": "404",
+    "not_found": "Page non trouvée.",
+    "back_to_shopping": "Retour à la boutique"
+  },
+  "cart": {
+    "checkout": "Paiement",
+    "title": "Panier",
+    "update": "Mettre à jour",
+    "remove": "Supprimer"
+  },
+  "templates": {
+    "contact": {
+      "form": {
+        "name": "Nom",
+        "email": "E-mail",
+        "phone": "Téléphone",
+        "comment": "Message",
+        "send": "Envoyer le message",
+        "post_success": "Merci de nous avoir contactés. Nous vous répondrons dans les plus brefs délais.",
+        "error_heading": "Veuillez corriger les points suivants :"
+      }
+    }
+  }
+}
