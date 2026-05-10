@@ -11,10 +11,51 @@
   "sections": {
     "main": {
       "type": "page",
+      "disabled": true,
       "settings": {}
+    },
+    "contact_main_Qpm8HG": {
+      "type": "contact-main",
+      "blocks": {
+        "address_nek6PW": {
+          "type": "address",
+          "settings": {
+            "heading": "Notre Showroom",
+            "address": "42 rue Piron\n21000 Dijon, France"
+          }
+        },
+        "contact_details_wpMjzP": {
+          "type": "contact_details",
+          "settings": {
+            "heading": "Contact Direct",
+            "phone": "+33 1 23 45 67 89",
+            "email": "contact@km-parfumerie.fr"
+          }
+        },
+        "hours_prznfe": {
+          "type": "hours",
+          "settings": {
+            "heading": "Horaires d'ouverture",
+            "mon_fri": "10:00 - 19:00",
+            "sat": "11:00 - 18:00",
+            "sun": "Fermé"
+          }
+        }
+      },
+      "block_order": [
+        "address_nek6PW",
+        "contact_details_wpMjzP",
+        "hours_prznfe"
+      ],
+      "name": "Page Contact Fragry",
+      "settings": {
+        "title": "Contactez-nous",
+        "subtitle": "Une question ? Une demande particulière ? Nos conseillers sont à votre entière disposition."
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "contact_main_Qpm8HG"
   ]
 }
