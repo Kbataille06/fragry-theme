@@ -45,7 +45,7 @@
             "image": "shopify://shop_images/produitsfemme.jpg",
             "title": "Pour elle",
             "subtitle": "",
-            "link": "",
+            "link": "shopify://collections/femme",
             "width": "50",
             "aspect_ratio": "1/1",
             "focal_point_x": 50,
@@ -59,7 +59,7 @@
             "image": "shopify://shop_images/produitshomme.jpg",
             "title": "Pour lui",
             "subtitle": "",
-            "link": "",
+            "link": "shopify://collections/homme",
             "width": "50",
             "aspect_ratio": "1/1",
             "focal_point_x": 50,
@@ -102,6 +102,7 @@
         "rubrique_ehrr8h": {
           "type": "rubrique",
           "settings": {
+            "image": "shopify://shop_images/coffrets.jpg",
             "title": "Coffrets cadeaux",
             "subtitle": "",
             "link": "shopify://collections/parfums",
@@ -115,6 +116,7 @@
         "rubrique_RgB8Um": {
           "type": "rubrique",
           "settings": {
+            "image": "shopify://shop_images/marques.jpg",
             "title": "Maisons de parfumerie",
             "subtitle": "",
             "link": "shopify://pages/nos-maisons-de-parfum",
