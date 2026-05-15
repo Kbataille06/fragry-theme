@@ -155,14 +155,14 @@
               </details>
             {% endif %}
             
-            {% if section.settings.usage_text != blank %}
+            {% if product.metafields.custom.conseils_d_utilisation != blank %}
               <details class="km-accordion">
                 <summary class="km-accordion__header">
                   <span>Conseils d'utilisation</span>
                   <svg class="km-accordion__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
                 </summary>
                 <div class="km-accordion__content">
-                  <div class="km-rte">{{ section.settings.usage_text }}</div>
+                  <div class="km-rte">{{ product.metafields.custom.conseils_d_utilisation }}</div>
                 </div>
               </details>
             {% endif %}
@@ -289,12 +289,6 @@ document.addEventListener('DOMContentLoaded', function() {
       "id": "shipping_text",
       "label": "Texte de Livraison",
       "default": "<p>Expédition sous 24h. Livraison gratuite à partir de 100€ d'achat.</p>"
-    },
-    {
-      "type": "richtext",
-      "id": "usage_text",
-      "label": "Conseils d'utilisation",
-      "default": "<p>Vaporisez sur les points de pulsation (poignets, cou, derrière les oreilles) à une distance de 20cm.</p>"
     }
   ],
   "presets": [
