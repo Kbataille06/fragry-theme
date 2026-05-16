@@ -1,222 +1,326 @@
 {%- comment -%}
-  Predictive Search Snippet
+  Predictive Search Fullscreen Modal
   Usage: {% render 'predictive-search' %}
 {%- endcomment -%}
 
-<div class="km-predictive-search" data-predictive-search>
-  <form action="{{ routes.search_url }}" method="get" role="search" class="km-predictive-search__form">
-    <input type="hidden" name="type" value="product">
-    <div class="km-predictive-search__input-wrapper">
-      <input 
-        type="text" 
-        name="q" 
-        value="{{ search.terms | escape }}" 
-        placeholder="Rechercher un parfum, une marque..." 
-        class="km-predictive-search__input"
-        data-predictive-search-input
-        autocomplete="off"
-        autocorrect="off"
-        autocapitalize="off"
-        spellcheck="false"
-      >
-      <button type="submit" class="km-predictive-search__submit" aria-label="Rechercher">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-      </button>
-    </div>
-  </form>
+<div id="km-predictive-modal" class="km-predictive-modal" role="dialog" aria-modal="true" aria-label="Recherche">
+  <div class="km-predictive-modal__backdrop" data-search-close></div>
+  
+  <div class="km-predictive-modal__content">
+    <button type="button" class="km-predictive-modal__close" data-search-close aria-label="Fermer la recherche">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <path d="M18 6L6 18M6 6l12 12"></path>
+      </svg>
+    </button>
 
-  <div class="predictive-results-dropdown" data-predictive-search-results style="display: none;">
-    <!-- Résultats injectés via JS -->
+    <div class="km-predictive-modal__inner">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="km-predictive-form">
+        <input type="hidden" name="type" value="product">
+        <div class="km-predictive-input-group">
+          <input 
+            type="text" 
+            name="q" 
+            placeholder="Rechercher..." 
+            class="km-predictive-input"
+            data-predictive-input
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+          >
+        </div>
+      </form>
+
+      <div class="km-predictive-results" data-predictive-results>
+        <!-- Grille de résultats injectée ici -->
+      </div>
+    </div>
   </div>
 </div>
 
 <style>
-  .km-predictive-search {
-    position: relative;
-    width: 100%;
-    /* Ajustez la largeur maximale selon l'endroit où vous placez la barre */
-  }
-
-  .km-predictive-search__input-wrapper {
-    position: relative;
+  /* Variables locales pour le modal */
+  .km-predictive-modal {
+    --modal-bg: rgba(18, 18, 18, 0.95);
+    --gold: #C6A05A;
+    --text-main: #F5F0EA;
+    --text-muted: #999999;
+    
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
     display: flex;
-    align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    transition: border-color 0.3s ease;
-  }
-  
-  .km-predictive-search__input-wrapper:focus-within {
-    border-color: #C6A05A;
+    align-items: flex-start;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
   }
 
-  .km-predictive-search__input {
-    width: 100%;
-    background: transparent;
-    border: none;
-    padding: 10px 40px 10px 0;
-    color: var(--c-text, #F5F0EA);
-    font-family: var(--font-body, sans-serif);
-    font-size: 0.95rem;
-    outline: none;
-  }
-  
-  .km-predictive-search__input::placeholder {
-    color: rgba(245, 240, 234, 0.4);
+  .km-predictive-modal.is-active {
+    opacity: 1;
+    visibility: visible;
   }
 
-  .km-predictive-search__submit {
+  .km-predictive-modal__backdrop {
     position: absolute;
-    right: 0;
+    inset: 0;
+    background-color: var(--modal-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 1;
+  }
+
+  .km-predictive-modal__close {
+    position: absolute;
+    top: 30px;
+    right: 30px;
     background: transparent;
     border: none;
-    color: #C6A05A;
+    color: var(--text-main);
     cursor: pointer;
-    padding: 5px;
+    z-index: 3;
+    padding: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.3s ease;
-  }
-  
-  .km-predictive-search__submit:hover {
-    transform: scale(1.1);
+    transition: transform 0.3s ease, color 0.3s ease;
   }
 
-  /* Dropdown (Fond sombre #121212, fine bordure, angles max 4px) */
-  .predictive-results-dropdown {
-    position: absolute;
-    top: calc(100% + 5px);
-    left: 0;
+  .km-predictive-modal__close:hover {
+    color: var(--gold);
+    transform: rotate(90deg);
+  }
+
+  .km-predictive-modal__close svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .km-predictive-modal__content {
+    position: relative;
+    z-index: 2;
     width: 100%;
-    background-color: #121212;
-    border: 1px solid #333;
-    border-radius: 4px;
-    z-index: 100;
-    max-height: 400px;
+    max-width: 1200px;
+    padding: 80px 20px 40px;
+    height: 100%;
     overflow-y: auto;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     
-    /* Animation Fade-in fluide */
-    opacity: 0;
-    transform: translateY(-5px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    pointer-events: none;
+    /* Cache la scrollbar globale du modal pour un look épuré */
+    scrollbar-width: none;
+  }
+  .km-predictive-modal__content::-webkit-scrollbar {
+    display: none;
   }
 
-  .predictive-results-dropdown.is-open {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-
-  /* Stylisation de la scrollbar pour le dropdown */
-  .predictive-results-dropdown::-webkit-scrollbar {
-    width: 4px;
-  }
-  .predictive-results-dropdown::-webkit-scrollbar-track {
-    background: #121212;
-  }
-  .predictive-results-dropdown::-webkit-scrollbar-thumb {
-    background: #333;
-    border-radius: 4px;
-  }
-
-  /* Cartes produits dans les résultats */
-  .km-predictive-item {
-    display: flex;
-    align-items: center;
-    padding: 12px 15px;
-    gap: 15px;
-    text-decoration: none;
-    border-bottom: 1px solid #222;
-    transition: background-color 0.2s ease;
-  }
-
-  .km-predictive-item:last-child {
-    border-bottom: none;
-  }
-
-  /* Au survol: éclaircir légèrement le fond */
-  .km-predictive-item:hover {
-    background-color: #1a1a1a;
-  }
-
-  .km-predictive-item__image {
-    width: 45px;
-    height: 55px;
-    object-fit: cover;
-    border-radius: 2px;
-    background-color: #222;
-  }
-
-  .km-predictive-item__info {
+  .km-predictive-modal__inner {
+    max-width: 800px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    flex: 1;
+    align-items: center;
   }
 
-  .km-predictive-item__title {
+  .km-predictive-form {
+    width: 100%;
+    margin-bottom: 50px;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s, opacity 0.6s ease 0.1s;
+  }
+
+  .km-predictive-modal.is-active .km-predictive-form {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .km-predictive-input-group {
+    width: 100%;
+  }
+
+  .km-predictive-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--gold);
+    color: var(--text-main);
     font-family: var(--font-heading, serif);
-    font-size: 0.95rem;
-    color: #F5F0EA;
-    margin: 0 0 4px 0;
-    transition: color 0.2s ease;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    text-align: center;
+    padding: 15px 0;
+    outline: none;
+    caret-color: var(--gold);
+    border-radius: 0; /* Reset Safari */
+  }
+
+  .km-predictive-input::placeholder {
+    color: rgba(245, 240, 234, 0.2);
+  }
+
+  .km-predictive-results {
+    width: 100%;
+    transform: translateY(10px);
+    opacity: 0;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+  }
+
+  .km-predictive-results.has-results {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* Grille des résultats */
+  .km-predictive-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px 20px;
+  }
+
+  @media (min-width: 768px) {
+    .km-predictive-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 50px 30px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .km-predictive-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .km-predictive-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    align-items: center;
+    group: hover;
+  }
+
+  .km-predictive-card__image-wrap {
+    width: 100%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    background-color: #1a1a1a;
+    border-radius: 2px;
+    margin-bottom: 15px;
+  }
+
+  .km-predictive-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: transform;
+  }
+
+  .km-predictive-card:hover .km-predictive-card__image {
+    transform: scale(1.05);
+  }
+
+  .km-predictive-card__title {
+    font-family: var(--font-heading, serif);
+    font-size: 1.1rem;
+    color: var(--text-main);
+    text-align: center;
+    margin: 0 0 5px 0;
+    transition: color 0.3s ease;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    line-height: 1.3;
   }
 
-  /* Au survol: Titre passe en Or (#C6A05A) */
-  .km-predictive-item:hover .km-predictive-item__title {
-    color: #C6A05A;
+  .km-predictive-card:hover .km-predictive-card__title {
+    color: var(--gold);
   }
 
-  .km-predictive-item__price {
+  .km-predictive-card__price {
     font-family: var(--font-body, sans-serif);
-    font-size: 0.85rem;
-    color: #999;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    text-align: center;
     margin: 0;
+    letter-spacing: 0.05em;
   }
 
   .km-predictive-empty {
-    padding: 20px 15px;
     text-align: center;
-    font-family: var(--font-body, sans-serif);
-    font-size: 0.9rem;
-    color: #999;
+    font-family: var(--font-heading, serif);
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    font-style: italic;
+    padding: 40px 0;
+    animation: fadeIn 0.5s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 </style>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const searchContainer = document.querySelector('[data-predictive-search]');
-    if (!searchContainer) return;
+    const modal = document.getElementById('km-predictive-modal');
+    if (!modal) return;
 
-    const input = searchContainer.querySelector('[data-predictive-search-input]');
-    const resultsDropdown = searchContainer.querySelector('[data-predictive-search-results]');
+    const input = modal.querySelector('[data-predictive-input]');
+    const resultsContainer = modal.querySelector('[data-predictive-results]');
+    const openButtons = document.querySelectorAll('[data-search-open]');
+    const closeButtons = modal.querySelectorAll('[data-search-close]');
     
     let debounceTimer;
-    
+    let isOpen = false;
+
+    // Fonction pour ouvrir le modal
+    function openSearch(e) {
+      if(e) e.preventDefault();
+      isOpen = true;
+      modal.classList.add('is-active');
+      document.body.style.overflow = 'hidden'; // Empêche le scroll derrière
+      
+      // Auto-focus avec léger délai pour l'animation
+      setTimeout(() => {
+        input.focus();
+      }, 100);
+    }
+
+    // Fonction pour fermer le modal
+    function closeSearch() {
+      isOpen = false;
+      modal.classList.remove('is-active');
+      document.body.style.overflow = '';
+      
+      // Réinitialisation optionnelle (commenté pour garder la recherche précédente si réouverture)
+      // input.value = '';
+      // resultsContainer.innerHTML = '';
+      // resultsContainer.classList.remove('has-results');
+    }
+
+    // Attacher les events d'ouverture/fermeture
+    openButtons.forEach(btn => btn.addEventListener('click', openSearch));
+    closeButtons.forEach(btn => btn.addEventListener('click', closeSearch));
+
+    // Fermeture avec Échap
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && isOpen) {
+        closeSearch();
+      }
+    });
+
+    // Requête API Predictive Search
     function fetchResults(query) {
       if (!query.trim()) {
-        resultsDropdown.innerHTML = '';
-        resultsDropdown.classList.remove('is-open');
-        // Permettre la fin de la transition d'opacité avant de display: none
-        setTimeout(() => {
-          if (!resultsDropdown.classList.contains('is-open')) {
-            resultsDropdown.style.display = 'none';
-          }
-        }, 300);
+        resultsContainer.innerHTML = '';
+        resultsContainer.classList.remove('has-results');
         return;
       }
 
-      // Requête à l'API Suggest native de Shopify
-      fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=5`)
+      const url = `/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=8&resources[options][unavailable_products]=last`;
+
+      fetch(url)
         .then(response => {
           if (!response.ok) throw new Error('Erreur réseau');
           return response.json();
@@ -226,44 +330,44 @@
           renderResults(products);
         })
         .catch(error => {
-          console.error('Erreur lors de la recherche prédictive:', error);
+          console.error('Erreur predictive search:', error);
         });
     }
 
+    // Rendu dynamique du HTML
     function renderResults(products) {
-      resultsDropdown.style.display = 'block';
-
       if (!products || products.length === 0) {
-        resultsDropdown.innerHTML = `
+        resultsContainer.innerHTML = `
           <div class="km-predictive-empty">
-            Aucun résultat trouvé pour cette recherche.
+            Aucune fragrance trouvée pour cette recherche.
           </div>
         `;
       } else {
-        const html = products.map(product => {
+        const gridHtml = products.map(product => {
+          // Si l'URL de l'image est fournie par l'API, on l'utilise, sinon un div vide
           const imageUrl = product.image || '';
           
           return `
-            <a href="${product.url}" class="km-predictive-item">
-              ${imageUrl ? `<img src="${imageUrl}" alt="${product.title.replace(/"/g, '&quot;')}" class="km-predictive-item__image" loading="lazy">` : `<div class="km-predictive-item__image"></div>`}
-              <div class="km-predictive-item__info">
-                <h4 class="km-predictive-item__title">${product.title}</h4>
-                <p class="km-predictive-item__price">${product.price}</p>
+            <a href="${product.url}" class="km-predictive-card">
+              <div class="km-predictive-card__image-wrap">
+                ${imageUrl ? `<img src="${imageUrl}" alt="${product.title.replace(/"/g, '&quot;')}" class="km-predictive-card__image" loading="lazy">` : ``}
               </div>
+              <h4 class="km-predictive-card__title">${product.title}</h4>
+              <p class="km-predictive-card__price">${product.price}</p>
             </a>
           `;
         }).join('');
         
-        resultsDropdown.innerHTML = html;
+        resultsContainer.innerHTML = `<div class="km-predictive-grid">${gridHtml}</div>`;
       }
       
-      // Laisser le navigateur faire un reflow pour que la transition CSS s'exécute
+      // On ajoute la classe pour l'animation d'apparition
       requestAnimationFrame(() => {
-        resultsDropdown.classList.add('is-open');
+        resultsContainer.classList.add('has-results');
       });
     }
 
-    // Écoute de l'événement "input" avec Debounce (300ms)
+    // Écoute de la saisie avec Debounce
     input.addEventListener('input', function(e) {
       const query = e.target.value;
       
@@ -271,28 +375,6 @@
       debounceTimer = setTimeout(() => {
         fetchResults(query);
       }, 300);
-    });
-
-    // Fermer le menu si l'utilisateur clique en dehors de la barre de recherche
-    document.addEventListener('click', function(e) {
-      if (!searchContainer.contains(e.target)) {
-        resultsDropdown.classList.remove('is-open');
-        setTimeout(() => {
-          if (!resultsDropdown.classList.contains('is-open')) {
-            resultsDropdown.style.display = 'none';
-          }
-        }, 300);
-      }
-    });
-
-    // Ré-ouvrir le menu déroulant si on clique à nouveau sur l'input et qu'il y a du contenu
-    input.addEventListener('focus', function() {
-      if (input.value.trim() !== '' && resultsDropdown.innerHTML.trim() !== '') {
-        resultsDropdown.style.display = 'block';
-        requestAnimationFrame(() => {
-          resultsDropdown.classList.add('is-open');
-        });
-      }
     });
   });
 </script>
