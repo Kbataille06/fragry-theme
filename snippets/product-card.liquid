@@ -64,7 +64,7 @@
     {% endif %}
 
     <!-- Badge -->
-    {% if not product.available %}
+    {% if product.available == false %}
       <span class="km-col-card__badge km-col-card__badge--soldout" style="background: rgba(0,0,0,0.8); color: #fff;">Épuisé</span>
     {% elsif product.compare_at_price > product.price %}
       <span class="km-col-card__badge">Promo</span>
