@@ -3,6 +3,59 @@
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
   }
+  
+  .km-brand-card {
+    background: transparent !important;
+    overflow: visible !important;
+  }
+  
+  .km-brand-card__image-wrap {
+    width: 100%;
+    aspect-ratio: 1/1;
+    background: var(--c-surface);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10%;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
+  }
+  
+  .km-brand-card:hover .km-brand-card__image-wrap {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  }
+  
+  .km-brand-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  
+  .km-brand-card:hover .km-brand-card__image {
+    transform: scale(1.05);
+  }
+  
+  .km-brand-card__content {
+    text-align: center;
+    padding-top: 15px;
+  }
+  
+  .km-brand-card__title {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--band-heading, var(--c-heading));
+    transition: color 0.3s ease;
+  }
+  
+  .km-brand-card:hover .km-brand-card__title {
+    color: var(--c-accent-gold);
+  }
 {%- endstyle -%}
 
 <div class="km-band km-band--{{ section.settings.color_scheme }}">
@@ -38,28 +91,23 @@
           assign brand_url = brand.system.url | default: filter_url
         -%}
         
-        <a href="{{ brand_url }}" 
-           class="km-category-card km-category-card--33"
-           style="--card-aspect: 1/1; --overlay-opacity: 0.3;">
-           
-          <div class="km-category-card__image-wrap">
+        <a href="{{ brand_url }}" class="km-category-card km-category-card--33 km-brand-card">
+          <div class="km-brand-card__image-wrap">
             {%- if brand_logo != blank -%}
               {{ brand_logo | image_url: width: 800 | image_tag: 
                 loading: 'lazy', 
-                class: 'km-category-card__image',
+                class: 'km-brand-card__image',
                 widths: '400, 600, 800'
               }}
             {%- else -%}
-              <div class="km-category-card__placeholder">
+              <div style="color: var(--c-accent-gold); font-family: var(--font-heading); font-size: 3rem; text-transform: uppercase;">
                 <span>{{ brand_name | slice: 0 | upcase }}</span>
               </div>
             {%- endif -%}
-            
-            <div class="km-category-card__overlay"></div>
-            
-            <div class="km-category-card__content">
-              <h3 class="km-category-card__title">{{ brand_name }}</h3>
-            </div>
+          </div>
+          
+          <div class="km-brand-card__content">
+            <h3 class="km-brand-card__title">{{ brand_name }}</h3>
           </div>
         </a>
       {%- else -%}
