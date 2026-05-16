@@ -41,22 +41,24 @@
           We loop through all products. For larger catalogs, this might need optimization (like using search or collections).
           We check if the product's maison_de_parfum metafield references this metaobject.
         {%- endcomment -%}
-        {%- for product in collections.all.products -%}
-           {%- liquid
-             assign matches = false
-             # Try metafield reference match
-             if product.metafields.custom.maison_de_parfum.value.system.handle == metaobject.system.handle
-                assign matches = true
-             # Fallback to vendor name match
-             elsif product.vendor == brand_name
-                assign matches = true
-             endif
-           -%}
-           {%- if matches -%}
-              {%- assign count = count | plus: 1 -%}
-              {%- render 'product-card', product: product, index: count -%}
-           {%- endif -%}
-        {%- endfor -%}
+        {%- paginate collections.all.products by 250 -%}
+          {%- for product in collections.all.products -%}
+             {%- liquid
+               assign matches = false
+               # Try metafield reference match
+               if product.metafields.custom.maison_de_parfum.value.system.handle == metaobject.system.handle
+                  assign matches = true
+               # Fallback to vendor name match
+               elsif product.vendor == brand_name
+                  assign matches = true
+               endif
+             -%}
+             {%- if matches -%}
+                {%- assign count = count | plus: 1 -%}
+                {%- render 'product-card', product: product, index: count -%}
+             {%- endif -%}
+          {%- endfor -%}
+        {%- endpaginate -%}
         
         {%- if count == 0 -%}
           <div class="km-col-empty">
