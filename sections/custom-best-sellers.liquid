@@ -70,7 +70,9 @@
             {{ 'product-1' | placeholder_svg_tag: 'km-product-card__image km-product-card__image--primary' }}
           {%- endif -%}
 
-          {%- if product.compare_at_price > product.price -%}
+          {%- if not product.available -%}
+            <span class="km-product-card__badge km-product-card__badge--soldout" style="background: rgba(0,0,0,0.8); color: #fff;">Épuisé</span>
+          {%- elsif product.compare_at_price > product.price -%}
             <span class="km-product-card__badge">Promo</span>
           {%- elsif product.tags contains 'nouveau' or product.tags contains 'new' -%}
             <span class="km-product-card__badge">Nouveau</span>
@@ -104,21 +106,32 @@
           </div>
 
           {%- comment -%} Bouton Add to Cart — grand sur desktop, icône sur mobile {%- endcomment -%}
-          <button
-            type="button"
-            class="km-product-card__add-btn"
-            data-add-to-cart
-            aria-label="Ajouter {{ product.title | escape }} au panier"
-          >
-            <span class="km-product-card__add-btn-icon" aria-hidden="true">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-                <line x1="3" y1="6" x2="21" y2="6"/>
-                <path d="M16 10a4 4 0 0 1-8 0"/>
-              </svg>
-            </span>
-            <span class="km-product-card__add-btn-label" data-state="idle">Ajouter au panier</span>
-          </button>
+          {%- if product.available -%}
+            <button
+              type="button"
+              class="km-product-card__add-btn"
+              data-add-to-cart
+              aria-label="Ajouter {{ product.title | escape }} au panier"
+            >
+              <span class="km-product-card__add-btn-icon" aria-hidden="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                  <line x1="3" y1="6" x2="21" y2="6"/>
+                  <path d="M16 10a4 4 0 0 1-8 0"/>
+                </svg>
+              </span>
+              <span class="km-product-card__add-btn-label" data-state="idle">Ajouter au panier</span>
+            </button>
+          {%- else -%}
+            <button
+              type="button"
+              class="km-product-card__add-btn"
+              disabled
+              aria-label="{{ product.title | escape }} est en rupture de stock"
+            >
+              <span class="km-product-card__add-btn-label" data-state="idle">Rupture de stock</span>
+            </button>
+          {%- endif -%}
         </div>
 
       </article>
