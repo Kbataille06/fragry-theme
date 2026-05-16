@@ -1,0 +1,298 @@
+{%- comment -%}
+  Predictive Search Snippet
+  Usage: {% render 'predictive-search' %}
+{%- endcomment -%}
+
+<div class="km-predictive-search" data-predictive-search>
+  <form action="{{ routes.search_url }}" method="get" role="search" class="km-predictive-search__form">
+    <input type="hidden" name="type" value="product">
+    <div class="km-predictive-search__input-wrapper">
+      <input 
+        type="text" 
+        name="q" 
+        value="{{ search.terms | escape }}" 
+        placeholder="Rechercher un parfum, une marque..." 
+        class="km-predictive-search__input"
+        data-predictive-search-input
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
+      >
+      <button type="submit" class="km-predictive-search__submit" aria-label="Rechercher">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </button>
+    </div>
+  </form>
+
+  <div class="predictive-results-dropdown" data-predictive-search-results style="display: none;">
+    <!-- Résultats injectés via JS -->
+  </div>
+</div>
+
+<style>
+  .km-predictive-search {
+    position: relative;
+    width: 100%;
+    /* Ajustez la largeur maximale selon l'endroit où vous placez la barre */
+  }
+
+  .km-predictive-search__input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    transition: border-color 0.3s ease;
+  }
+  
+  .km-predictive-search__input-wrapper:focus-within {
+    border-color: #C6A05A;
+  }
+
+  .km-predictive-search__input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 10px 40px 10px 0;
+    color: var(--c-text, #F5F0EA);
+    font-family: var(--font-body, sans-serif);
+    font-size: 0.95rem;
+    outline: none;
+  }
+  
+  .km-predictive-search__input::placeholder {
+    color: rgba(245, 240, 234, 0.4);
+  }
+
+  .km-predictive-search__submit {
+    position: absolute;
+    right: 0;
+    background: transparent;
+    border: none;
+    color: #C6A05A;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .km-predictive-search__submit:hover {
+    transform: scale(1.1);
+  }
+
+  /* Dropdown (Fond sombre #121212, fine bordure, angles max 4px) */
+  .predictive-results-dropdown {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    width: 100%;
+    background-color: #121212;
+    border: 1px solid #333;
+    border-radius: 4px;
+    z-index: 100;
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    
+    /* Animation Fade-in fluide */
+    opacity: 0;
+    transform: translateY(-5px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+  }
+
+  .predictive-results-dropdown.is-open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* Stylisation de la scrollbar pour le dropdown */
+  .predictive-results-dropdown::-webkit-scrollbar {
+    width: 4px;
+  }
+  .predictive-results-dropdown::-webkit-scrollbar-track {
+    background: #121212;
+  }
+  .predictive-results-dropdown::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+  }
+
+  /* Cartes produits dans les résultats */
+  .km-predictive-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    gap: 15px;
+    text-decoration: none;
+    border-bottom: 1px solid #222;
+    transition: background-color 0.2s ease;
+  }
+
+  .km-predictive-item:last-child {
+    border-bottom: none;
+  }
+
+  /* Au survol: éclaircir légèrement le fond */
+  .km-predictive-item:hover {
+    background-color: #1a1a1a;
+  }
+
+  .km-predictive-item__image {
+    width: 45px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 2px;
+    background-color: #222;
+  }
+
+  .km-predictive-item__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+  }
+
+  .km-predictive-item__title {
+    font-family: var(--font-heading, serif);
+    font-size: 0.95rem;
+    color: #F5F0EA;
+    margin: 0 0 4px 0;
+    transition: color 0.2s ease;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Au survol: Titre passe en Or (#C6A05A) */
+  .km-predictive-item:hover .km-predictive-item__title {
+    color: #C6A05A;
+  }
+
+  .km-predictive-item__price {
+    font-family: var(--font-body, sans-serif);
+    font-size: 0.85rem;
+    color: #999;
+    margin: 0;
+  }
+
+  .km-predictive-empty {
+    padding: 20px 15px;
+    text-align: center;
+    font-family: var(--font-body, sans-serif);
+    font-size: 0.9rem;
+    color: #999;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchContainer = document.querySelector('[data-predictive-search]');
+    if (!searchContainer) return;
+
+    const input = searchContainer.querySelector('[data-predictive-search-input]');
+    const resultsDropdown = searchContainer.querySelector('[data-predictive-search-results]');
+    
+    let debounceTimer;
+    
+    function fetchResults(query) {
+      if (!query.trim()) {
+        resultsDropdown.innerHTML = '';
+        resultsDropdown.classList.remove('is-open');
+        // Permettre la fin de la transition d'opacité avant de display: none
+        setTimeout(() => {
+          if (!resultsDropdown.classList.contains('is-open')) {
+            resultsDropdown.style.display = 'none';
+          }
+        }, 300);
+        return;
+      }
+
+      // Requête à l'API Suggest native de Shopify
+      fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=5`)
+        .then(response => {
+          if (!response.ok) throw new Error('Erreur réseau');
+          return response.json();
+        })
+        .then(data => {
+          const products = data.resources.results.products;
+          renderResults(products);
+        })
+        .catch(error => {
+          console.error('Erreur lors de la recherche prédictive:', error);
+        });
+    }
+
+    function renderResults(products) {
+      resultsDropdown.style.display = 'block';
+
+      if (!products || products.length === 0) {
+        resultsDropdown.innerHTML = `
+          <div class="km-predictive-empty">
+            Aucun résultat trouvé pour cette recherche.
+          </div>
+        `;
+      } else {
+        const html = products.map(product => {
+          const imageUrl = product.image || '';
+          
+          return `
+            <a href="${product.url}" class="km-predictive-item">
+              ${imageUrl ? `<img src="${imageUrl}" alt="${product.title.replace(/"/g, '&quot;')}" class="km-predictive-item__image" loading="lazy">` : `<div class="km-predictive-item__image"></div>`}
+              <div class="km-predictive-item__info">
+                <h4 class="km-predictive-item__title">${product.title}</h4>
+                <p class="km-predictive-item__price">${product.price}</p>
+              </div>
+            </a>
+          `;
+        }).join('');
+        
+        resultsDropdown.innerHTML = html;
+      }
+      
+      // Laisser le navigateur faire un reflow pour que la transition CSS s'exécute
+      requestAnimationFrame(() => {
+        resultsDropdown.classList.add('is-open');
+      });
+    }
+
+    // Écoute de l'événement "input" avec Debounce (300ms)
+    input.addEventListener('input', function(e) {
+      const query = e.target.value;
+      
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        fetchResults(query);
+      }, 300);
+    });
+
+    // Fermer le menu si l'utilisateur clique en dehors de la barre de recherche
+    document.addEventListener('click', function(e) {
+      if (!searchContainer.contains(e.target)) {
+        resultsDropdown.classList.remove('is-open');
+        setTimeout(() => {
+          if (!resultsDropdown.classList.contains('is-open')) {
+            resultsDropdown.style.display = 'none';
+          }
+        }, 300);
+      }
+    });
+
+    // Ré-ouvrir le menu déroulant si on clique à nouveau sur l'input et qu'il y a du contenu
+    input.addEventListener('focus', function() {
+      if (input.value.trim() !== '' && resultsDropdown.innerHTML.trim() !== '') {
+        resultsDropdown.style.display = 'block';
+        requestAnimationFrame(() => {
+          resultsDropdown.classList.add('is-open');
+        });
+      }
+    });
+  });
+</script>
