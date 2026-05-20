@@ -11,13 +11,6 @@
   "type": "header",
   "name": "En-tête",
   "sections": {
-    "km-header": {
-      "type": "custom-header",
-      "settings": {
-        "logo": "shopify://shop_images/logo.jpg",
-        "menu_left": "main-menu"
-      }
-    },
     "custom_marquee_QcxP7b": {
       "type": "custom-marquee",
       "name": "Texte Défilant (Marquee)",
@@ -26,10 +19,17 @@
         "show_separator": true,
         "speed": 30,
         "direction": "left",
-        "bg_color": "#0A0A0A",
-        "text_color": "#D4AF37",
+        "bg_color": "#0a0a0a",
+        "text_color": "#d4af37",
         "font_size": 16,
         "padding_y": 15
+      }
+    },
+    "km-header": {
+      "type": "custom-header",
+      "settings": {
+        "logo": "shopify://shop_images/tapis_km_parfumerie_2.png",
+        "menu_left": "main-menu"
       }
     }
   },
