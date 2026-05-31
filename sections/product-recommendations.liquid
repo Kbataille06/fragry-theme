@@ -10,20 +10,11 @@
   {%- if recommendations.performed and recommendations.products_count > 0 -%}
     <div class="antigravity-recommendations">
       <h2 class="antigravity-recommendations__title">{{ section.settings.title | escape }}</h2>
-      <div class="antigravity-recommendations__grid">
+      <ul class="antigravity-recommendations__grid" style="list-style: none; padding: 0; margin: 0;">
         {%- for product in recommendations.products -%}
-          <a href="{{ product.url }}" class="antigravity-product-card">
-            <img class="antigravity-product-card__image" 
-                 src="{{ product.featured_media | image_url: width: 400 }}" 
-                 alt="{{ product.title | escape }}" 
-                 loading="lazy" 
-                 width="400" 
-                 height="533">
-            <h3 class="antigravity-product-card__title">{{ product.title }}</h3>
-            <p class="antigravity-product-card__price">{{ product.price | money }}</p>
-          </a>
+          {% render 'product-card', product: product, index: forloop.index0 %}
         {%- endfor -%}
-      </div>
+      </ul>
     </div>
   {%- endif -%}
 </div>
