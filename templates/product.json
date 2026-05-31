@@ -19,6 +19,7 @@
     "product-recommendations": {
       "type": "product-recommendations",
       "settings": {
+        "color_scheme": "dark",
         "title": "Complétez votre sillage",
         "intent": "complementary",
         "limit": 4
