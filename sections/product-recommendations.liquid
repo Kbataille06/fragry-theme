@@ -3,20 +3,24 @@
   Affiche les recommandations basées sur l'intent (related ou complementary).
 {%- endcomment -%}
 
-<div class="antigravity-recommendations-section" 
-     data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.limit }}&intent={{ section.settings.intent }}"
-     data-product-recommendations>
-  
-  {%- if recommendations.performed and recommendations.products_count > 0 -%}
-    <div class="antigravity-recommendations">
-      <h2 class="antigravity-recommendations__title">{{ section.settings.title | escape }}</h2>
-      <ul class="antigravity-recommendations__grid" style="list-style: none; padding: 0; margin: 0;">
+<div class="km-band km-band--light">
+  <section class="km-section" 
+       data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.limit }}&intent={{ section.settings.intent }}"
+       data-product-recommendations>
+    
+    {%- if recommendations.performed and recommendations.products_count > 0 -%}
+      <div class="km-section__header">
+        <h2 class="km-section__title" style="text-align: center;">{{ section.settings.title | escape }}</h2>
+        <div class="km-section__divider"></div>
+      </div>
+      
+      <ul class="km-col-grid" role="list">
         {%- for product in recommendations.products -%}
           {% render 'product-card', product: product, index: forloop.index0 %}
         {%- endfor -%}
       </ul>
-    </div>
-  {%- endif -%}
+    {%- endif -%}
+  </section>
 </div>
 
 {% schema %}

@@ -17,7 +17,6 @@
 
     {%- comment -%} Theme design system {%- endcomment -%}
     {{ 'fragry.css' | asset_url | stylesheet_tag }}
-    {{ 'antigravity-recommendations.css' | asset_url | stylesheet_tag }}
 
     {{ content_for_header }}
   </head>
@@ -39,7 +38,7 @@
 
     {%- comment -%} Global vanilla JS {%- endcomment -%}
     <script src="{{ 'fragry.js' | asset_url }}" defer></script>
-    <script src="{{ 'antigravity-recommendations.js' | asset_url }}" defer></script>
+    <script src="{{ 'antigravity-recommendations.js' | asset_url }}" defer="defer"></script>
 
     {%- comment -%} Mini-cart global JS {%- endcomment -%}
     <script src="{{ 'mini-cart.js' | asset_url }}" defer></script>
