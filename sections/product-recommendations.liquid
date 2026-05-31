@@ -3,7 +3,7 @@
   Affiche les recommandations basées sur l'intent (related ou complementary).
 {%- endcomment -%}
 
-<div class="km-band km-band--light">
+<div class="km-band km-band--{{ section.settings.color_scheme }}" id="band-recommendations-{{ section.id }}">
   <section class="km-section" 
        data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.limit }}&intent={{ section.settings.intent }}"
        data-product-recommendations>
@@ -27,6 +27,16 @@
 {
   "name": "Recommandations Luxe",
   "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Palette de couleurs",
+      "options": [
+        { "value": "light", "label": "🤍 Fond clair (ivoire)" },
+        { "value": "dark",  "label": "🖤 Fond sombre (noir)" }
+      ],
+      "default": "light"
+    },
     {
       "type": "text",
       "id": "title",
@@ -62,7 +72,10 @@
   ],
   "presets": [
     {
-      "name": "Recommandations Luxe"
+      "name": "Recommandations Luxe",
+      "settings": {
+        "color_scheme": "light"
+      }
     }
   ]
 }
