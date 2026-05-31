@@ -17,6 +17,9 @@
         "usage_text": "<p>Vaporisez sur les points de pulsation (poignets, cou, derrière les oreilles) à une distance de 20cm.</p>"
       }
     },
+    "product-recommendations": {
+      "type": "product-recommendations"
+    },
     "17779750066f5fb983": {
       "type": "apps",
       "blocks": {
@@ -38,6 +41,7 @@
   },
   "order": [
     "main",
+    "product-recommendations",
     "17779750066f5fb983"
   ]
 }
