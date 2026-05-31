@@ -10,15 +10,101 @@
     
     {%- if recommendations.performed and recommendations.products_count > 0 -%}
       <div class="km-section__header">
-        <h2 class="km-section__title" style="text-align: center;">{{ section.settings.title | escape }}</h2>
+        <h2 class="km-section__title">{{ section.settings.title | escape }}</h2>
         <div class="km-section__divider"></div>
       </div>
       
-      <ul class="km-col-grid" role="list">
+      <div class="km-products-grid">
         {%- for product in recommendations.products -%}
-          {% render 'product-card', product: product, index: forloop.index0 %}
+          {%- assign variant_id = product.variants.first.id -%}
+          
+          <article class="km-product-card" data-variant-id="{{ variant_id }}">
+            <a href="{{ product.url }}" class="km-product-card__image-wrap">
+              {%- if product.featured_image -%}
+                <img
+                  class="km-product-card__image km-product-card__image--primary"
+                  src="{{ product.featured_image | image_url: width: 600 }}"
+                  srcset="
+                    {{ product.featured_image | image_url: width: 400 }} 400w,
+                    {{ product.featured_image | image_url: width: 600 }} 600w
+                  "
+                  sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                  loading="lazy"
+                  width="600"
+                  height="800"
+                >
+                {%- if product.images[1] -%}
+                  <img
+                    class="km-product-card__image km-product-card__image--secondary"
+                    src="{{ product.images[1] | image_url: width: 600 }}"
+                    srcset="
+                      {{ product.images[1] | image_url: width: 400 }} 400w,
+                      {{ product.images[1] | image_url: width: 600 }} 600w
+                    "
+                    sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    alt="{{ product.images[1].alt | default: product.title | escape }}"
+                    loading="lazy"
+                    width="600"
+                    height="800"
+                    aria-hidden="true"
+                  >
+                {%- endif -%}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'km-product-card__image km-product-card__image--primary' }}
+              {%- endif -%}
+
+              {%- if product.available == false -%}
+                <span class="km-product-card__badge km-product-card__badge--soldout" style="background: rgba(0,0,0,0.8); color: #fff;">Épuisé</span>
+              {%- elsif product.compare_at_price > product.price -%}
+                <span class="km-product-card__badge">Promo</span>
+              {%- elsif product.tags contains 'nouveau' or product.tags contains 'new' -%}
+                <span class="km-product-card__badge">Nouveau</span>
+              {%- endif -%}
+            </a>
+
+            <div class="km-product-card__body">
+              {%- if product.vendor != blank -%}
+                <p class="km-product-card__vendor">{{ product.vendor }}</p>
+              {%- endif -%}
+              <a href="{{ product.url }}" class="km-product-card__title">
+                {{ product.title }}
+              </a>
+
+              <div class="km-product-card__meta">
+                <p class="km-product-card__price">
+                  {%- if product.compare_at_price > product.price -%}
+                    <span class="km-product-card__price-compare">{{ product.compare_at_price | money }}</span>
+                  {%- endif -%}
+                  {{ product.price | money }}
+                </p>
+              </div>
+
+              {%- if product.available -%}
+                <button
+                  type="button"
+                  class="km-product-card__add-btn js-quick-add"
+                  data-variant-id="{{ variant_id }}"
+                  aria-label="Ajouter {{ product.title | escape }} au panier"
+                >
+                  <span class="km-product-card__add-btn-icon" aria-hidden="true">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                      <line x1="3" y1="6" x2="21" y2="6"/>
+                      <path d="M16 10a4 4 0 0 1-8 0"/>
+                    </svg>
+                  </span>
+                  <span class="km-product-card__add-btn-label">Ajouter au panier</span>
+                </button>
+              {%- else -%}
+                <button type="button" class="km-product-card__add-btn" disabled>
+                  <span class="km-product-card__add-btn-label">Rupture de stock</span>
+                </button>
+              {%- endif -%}
+            </div>
+          </article>
         {%- endfor -%}
-      </ul>
+      </div>
     {%- endif -%}
   </section>
 </div>
