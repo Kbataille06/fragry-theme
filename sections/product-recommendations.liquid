@@ -1,15 +1,15 @@
 {%- comment -%}
   Section: product-recommendations.liquid
-  Affiche 4 recommandations basées sur l'intent "related".
+  Affiche les recommandations basées sur l'intent (related ou complementary).
 {%- endcomment -%}
 
 <div class="antigravity-recommendations-section" 
-     data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=4&intent=related"
+     data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.limit }}&intent={{ section.settings.intent }}"
      data-product-recommendations>
   
   {%- if recommendations.performed and recommendations.products_count > 0 -%}
     <div class="antigravity-recommendations">
-      <h2 class="antigravity-recommendations__title">{{ 'Complétez votre sillage' | escape }}</h2>
+      <h2 class="antigravity-recommendations__title">{{ section.settings.title | escape }}</h2>
       <div class="antigravity-recommendations__grid">
         {%- for product in recommendations.products -%}
           <a href="{{ product.url }}" class="antigravity-product-card">
@@ -30,11 +30,44 @@
 
 {% schema %}
 {
-  "name": "Produits Associés Luxe",
-  "settings": [],
+  "name": "Recommandations Luxe",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre de la section",
+      "default": "Complétez votre sillage"
+    },
+    {
+      "type": "select",
+      "id": "intent",
+      "label": "Type de recommandation",
+      "options": [
+        {
+          "value": "related",
+          "label": "Produits associés (Recommandations)"
+        },
+        {
+          "value": "complementary",
+          "label": "Produits complémentaires"
+        }
+      ],
+      "default": "related",
+      "info": "Défini dans l'application Search & Discovery"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "Nombre de produits",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    }
+  ],
   "presets": [
     {
-      "name": "Produits Associés Luxe"
+      "name": "Recommandations Luxe"
     }
   ]
 }
