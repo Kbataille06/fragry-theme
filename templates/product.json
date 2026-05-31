@@ -18,7 +18,11 @@
     },
     "product-recommendations": {
       "type": "product-recommendations",
-      "settings": {}
+      "settings": {
+        "title": "Complétez votre sillage",
+        "intent": "complementary",
+        "limit": 4
+      }
     },
     "17779750066f5fb983": {
       "type": "apps",
