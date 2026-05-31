@@ -1,0 +1,41 @@
+{%- comment -%}
+  Section: product-recommendations.liquid
+  Affiche 4 recommandations basées sur l'intent "related".
+{%- endcomment -%}
+
+<div class="antigravity-recommendations-section" 
+     data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=4&intent=related"
+     data-product-recommendations>
+  
+  {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    <div class="antigravity-recommendations">
+      <h2 class="antigravity-recommendations__title">{{ 'Complétez votre sillage' | escape }}</h2>
+      <div class="antigravity-recommendations__grid">
+        {%- for product in recommendations.products -%}
+          <a href="{{ product.url }}" class="antigravity-product-card">
+            <img class="antigravity-product-card__image" 
+                 src="{{ product.featured_media | image_url: width: 400 }}" 
+                 alt="{{ product.title | escape }}" 
+                 loading="lazy" 
+                 width="400" 
+                 height="533">
+            <h3 class="antigravity-product-card__title">{{ product.title }}</h3>
+            <p class="antigravity-product-card__price">{{ product.price | money }}</p>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Produits Associés Luxe",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Produits Associés Luxe"
+    }
+  ]
+}
+{% endschema %}

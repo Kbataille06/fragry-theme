@@ -1,0 +1,40 @@
+{%- comment -%}
+  Snippet: cart-upsell.liquid
+  Affiche 2 produits complémentaires basés sur le premier produit du panier.
+{%- endcomment -%}
+
+{%- if cart.items.size > 0 -%}
+  {%- assign first_product_id = cart.items.first.product_id -%}
+  
+  <div class="antigravity-cart-upsell-wrapper"
+       data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ first_product_id }}&limit=2&intent=complementary"
+       data-cart-recommendations>
+       
+    {%- if recommendations.performed and recommendations.products_count > 0 -%}
+      <div class="antigravity-cart-upsell">
+        <h3 class="antigravity-cart-upsell__title">Pour accompagner votre choix</h3>
+        <div class="antigravity-cart-upsell__list">
+          {%- for recommendation in recommendations.products -%}
+            <div class="antigravity-upsell-item">
+              <a href="{{ recommendation.url }}" class="antigravity-upsell-item__image-link">
+                <img class="antigravity-upsell-item__image" 
+                     src="{{ recommendation.featured_media | image_url: width: 140 }}" 
+                     alt="{{ recommendation.title | escape }}" 
+                     loading="lazy" 
+                     width="70" 
+                     height="90">
+              </a>
+              <div class="antigravity-upsell-item__info">
+                <a href="{{ recommendation.url }}" class="antigravity-upsell-item__title">{{ recommendation.title }}</a>
+                <button class="antigravity-upsell-item__btn js-quick-add" 
+                        data-variant-id="{{ recommendation.selected_or_first_available_variant.id }}">
+                  + Ajouter - {{ recommendation.price | money }}
+                </button>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
