@@ -36,8 +36,8 @@
           "type": "hours",
           "settings": {
             "heading": "Horaires d'ouverture",
-            "mon_fri": "10:00 - 19:00",
-            "sat": "11:00 - 18:00",
+            "mon": "Fermé",
+            "tue_sat": "10h30 - 19h00",
             "sun": "Fermé"
           }
         }

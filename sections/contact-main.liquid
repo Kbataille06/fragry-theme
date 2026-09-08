@@ -266,11 +266,11 @@
                   {{ block.settings.heading }}
                 </h3>
                 <ul class="opening-hours">
-                  {%- if block.settings.mon_fri != blank -%}
-                    <li><span class="day">Lundi - Vendredi</span> <span class="hours">{{ block.settings.mon_fri }}</span></li>
+                  {%- if block.settings.mon != blank -%}
+                    <li><span class="day">Lundi</span> <span class="hours">{{ block.settings.mon }}</span></li>
                   {%- endif -%}
-                  {%- if block.settings.sat != blank -%}
-                    <li><span class="day">Samedi</span> <span class="hours">{{ block.settings.sat }}</span></li>
+                  {%- if block.settings.tue_sat != blank -%}
+                    <li><span class="day">Mardi - Samedi</span> <span class="hours">{{ block.settings.tue_sat }}</span></li>
                   {%- endif -%}
                   {%- if block.settings.sun != blank -%}
                     <li><span class="day">Dimanche</span> <span class="hours">{{ block.settings.sun }}</span></li>
@@ -359,15 +359,15 @@
         },
         {
           "type": "text",
-          "id": "mon_fri",
-          "label": "Lundi - Vendredi",
-          "default": "10:00 - 19:00"
+          "id": "mon",
+          "label": "Lundi",
+          "default": "Fermé"
         },
         {
           "type": "text",
-          "id": "sat",
-          "label": "Samedi",
-          "default": "11:00 - 18:00"
+          "id": "tue_sat",
+          "label": "Mardi - Samedi",
+          "default": "10:30 - 19:00"
         },
         {
           "type": "text",
