@@ -15,7 +15,7 @@
       "type": "custom-marquee",
       "name": "Texte Défilant (Marquee)",
       "settings": {
-        "text": "LIVRAISON OFFERTE DÈS 100€ D'ACHAT",
+        "text": "LIVRAISON OFFERTE DÈS 60€ D'ACHAT",
         "show_separator": true,
         "speed": 30,
         "direction": "left",
