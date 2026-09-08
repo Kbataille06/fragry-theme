@@ -263,18 +263,12 @@
               <div class="info-item" {{ block.shopify_attributes }}>
                 <h3>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                  {{ block.settings.heading }}
+                  Horaires d'ouverture
                 </h3>
                 <ul class="opening-hours">
-                  {%- if block.settings.mon != blank -%}
-                    <li><span class="day">Lundi</span> <span class="hours">{{ block.settings.mon }}</span></li>
-                  {%- endif -%}
-                  {%- if block.settings.tue_sat != blank -%}
-                    <li><span class="day">Mardi - Samedi</span> <span class="hours">{{ block.settings.tue_sat }}</span></li>
-                  {%- endif -%}
-                  {%- if block.settings.sun != blank -%}
-                    <li><span class="day">Dimanche</span> <span class="hours">{{ block.settings.sun }}</span></li>
-                  {%- endif -%}
+                  <li><span class="day">Lundi</span> <span class="hours">Fermé</span></li>
+                  <li><span class="day">Mardi - Samedi</span> <span class="hours">10h30 - 19h00</span></li>
+                  <li><span class="day">Dimanche</span> <span class="hours">Fermé</span></li>
                 </ul>
               </div>
           {%- endcase -%}
@@ -352,28 +346,8 @@
       "limit": 1,
       "settings": [
         {
-          "type": "text",
-          "id": "heading",
-          "label": "Titre",
-          "default": "Horaires d'ouverture"
-        },
-        {
-          "type": "text",
-          "id": "mon",
-          "label": "Lundi",
-          "default": "Fermé"
-        },
-        {
-          "type": "text",
-          "id": "tue_sat",
-          "label": "Mardi - Samedi",
-          "default": "10:30 - 19:00"
-        },
-        {
-          "type": "text",
-          "id": "sun",
-          "label": "Dimanche",
-          "default": "Fermé"
+          "type": "paragraph",
+          "content": "Lundi : Fermé — Mardi à Samedi : 10h30 - 19h00 — Dimanche : Fermé. Ces horaires sont fixés directement dans le code de la section."
         }
       ]
     }

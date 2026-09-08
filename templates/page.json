@@ -34,12 +34,7 @@
         },
         "hours_prznfe": {
           "type": "hours",
-          "settings": {
-            "heading": "Horaires d'ouverture",
-            "mon": "Fermé",
-            "tue_sat": "10h30 - 19h00",
-            "sun": "Fermé"
-          }
+          "settings": {}
         }
       },
       "block_order": [
