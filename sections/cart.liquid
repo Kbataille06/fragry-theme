@@ -5,29 +5,123 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/cart
 {% endcomment %}
 
-<h1>{{ 'cart.title' | t }}</h1>
+<div class="km-cart-page" id="km-cart-page">
+  <div class="container km-cart-page__container">
 
-<form action="{{ routes.cart_url }}" method="post">
-  <table>
-    {% for item in cart.items %}
-      <tr>
-        <td>
-          {% render 'image', image: item.image, url: item.url %}
-        </td>
-        <td>
-          <p>{{ item.product.title }}</p>
-          {{ 'cart.remove' | t | link_to: item.url_to_remove }}
-        </td>
-        <td>
-          <input type="text" name="updates[]" value="{{ item.quantity }}">
-          <input type="submit" value="{{ 'cart.update' | t }}">
-        </td>
-      </tr>
-    {% endfor %}
-  </table>
+    <div class="km-cart-page__intro">
+      <span class="km-cart-page__eyebrow">Votre sélection</span>
+      <h1 class="km-cart-page__title">{{ 'cart.title' | t }}</h1>
+    </div>
 
-  <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}">
-</form>
+    {%- if cart.item_count == 0 -%}
+
+      <div class="km-cart-page__empty">
+        <div class="km-cart-page__empty-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+        </div>
+        <p class="km-cart-page__empty-msg">Votre panier est vide</p>
+        <a href="/collections/all" class="btn">Découvrir nos fragrances</a>
+      </div>
+
+    {%- else -%}
+
+      <form action="{{ routes.cart_url }}" method="post" class="km-cart-page__form" id="km-cart-page-form">
+        <div class="km-cart-page__layout">
+
+          <div class="km-cart-page__items-col">
+            <div class="km-cart-page__items-head">
+              <span aria-hidden="true"></span>
+              <span>Produit</span>
+              <span>Quantité</span>
+              <span>Total</span>
+            </div>
+
+            <ul class="km-cart-page__items" id="km-cart-page-items" aria-label="Articles dans le panier">
+              {%- for item in cart.items -%}
+                <li class="km-cart-page__item" data-key="{{ item.key }}">
+
+                  <div class="km-cart-page__item-media">
+                    <a href="{{ item.url }}" tabindex="-1" aria-hidden="true">
+                      {%- if item.image -%}
+                        <img
+                          src="{{ item.image | image_url: width: 240 }}"
+                          alt="{{ item.image.alt | default: item.product.title | escape }}"
+                          width="120"
+                          height="160"
+                          loading="lazy"
+                        >
+                      {%- endif -%}
+                    </a>
+                  </div>
+
+                  <div class="km-cart-page__item-info">
+                    {%- if item.product.vendor != blank -%}
+                      <span class="km-cart-page__item-vendor">{{ item.product.vendor }}</span>
+                    {%- endif -%}
+                    <a href="{{ item.url }}" class="km-cart-page__item-title">{{ item.product.title }}</a>
+                    {%- unless item.variant.title == 'Default Title' -%}
+                      <span class="km-cart-page__item-variant">{{ item.variant.title }}</span>
+                    {%- endunless -%}
+                    <span class="km-cart-page__item-unit-price">{{ item.original_price | money }} / unité</span>
+
+                    <a href="{{ item.url_to_remove }}" class="km-cart-page__item-remove" data-remove-line aria-label="Supprimer {{ item.product.title | escape }} du panier">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <path d="M6 18L18 6M6 6l12 12"/>
+                      </svg>
+                      {{ 'cart.remove' | t }}
+                    </a>
+                  </div>
+
+                  <div class="km-cart-page__item-qty">
+                    <div class="km-cart-page__qty-stepper" role="group" aria-label="Quantité pour {{ item.product.title | escape }}">
+                      <button type="button" class="km-cart-page__qty-btn" data-qty-minus aria-label="Diminuer la quantité">−</button>
+                      <input
+                        type="number"
+                        class="km-cart-page__qty-input"
+                        name="updates[]"
+                        value="{{ item.quantity }}"
+                        min="0"
+                        inputmode="numeric"
+                        aria-label="Quantité pour {{ item.product.title | escape }}"
+                      >
+                      <button type="button" class="km-cart-page__qty-btn" data-qty-plus aria-label="Augmenter la quantité">+</button>
+                    </div>
+                  </div>
+
+                  <div class="km-cart-page__item-total" data-item-total>
+                    {{ item.final_line_price | money }}
+                  </div>
+
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+
+          <div class="km-cart-page__summary">
+            <h2 class="km-cart-page__summary-title">Récapitulatif</h2>
+            <div class="km-cart-page__summary-row">
+              <span>Sous-total</span>
+              <span id="km-cart-page-subtotal">{{ cart.total_price | money }}</span>
+            </div>
+            <p class="km-cart-page__summary-note">Taxes et frais de livraison calculés à l'étape suivante.</p>
+
+            <button type="submit" name="checkout" class="btn km-cart-page__checkout-btn">
+              {{ 'cart.checkout' | t }}
+            </button>
+            <a href="/collections/all" class="km-cart-page__continue-link">Continuer mes achats</a>
+          </div>
+
+        </div>
+      </form>
+
+    {%- endif -%}
+
+  </div>
+</div>
 
 {% schema %}
 {
